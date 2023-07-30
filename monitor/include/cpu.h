@@ -39,7 +39,14 @@ struct cpu_info {
   u64 core_num{0};
   double cpu_hz{0};
   std::vector<double> cpu_s{};
+
+  cpu_info() = default;
+  cpu_info(cpu_info&& rvalue);
+
+  auto operator=(cpu_info&& rvalue) -> void;
+
+  auto clear() -> void;
 };
 
-auto get_cpu_info() -> cpu_info &;
+auto get_cpu_info() -> cpu_info&;
 } // namespace cpu

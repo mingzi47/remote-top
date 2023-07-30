@@ -2,6 +2,9 @@
 #include <cstdint>
 #include <vector>
 #include <fstream>
+#include <iostream>
+#include <sstream>
+#include <unordered_map>
 
 /*
   files
@@ -17,6 +20,10 @@ struct net_info {
   u64 net_upload_s{0};
   u64 net_download{0};
   u64 net_download_s{0};
+
+  net_info() = default;
+  net_info(net_info &&rvalue); 
+  auto operator=(net_info &&rvalue) -> void;
 };
 
 auto get_net_info() -> std::vector<net_info>&;

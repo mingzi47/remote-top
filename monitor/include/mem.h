@@ -19,5 +19,5 @@ struct mem_info {
   u64 mem_swap_free;
 };
 
-auto get_mem_info() -> mem_info&;
+auto get_mem_info() -> mem_info;
 } // namespace mem

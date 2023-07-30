@@ -1,16 +1,11 @@
 #include <mem.h>
 
 namespace mem {
-mem_info mem;
+mem_info mem{};
 
 static std::ifstream fread;
 
-static auto trim(std::string &str) -> void {
-  str.erase(0, str.find_first_not_of(' '));
-  str.erase(str.find_last_not_of(' '));
-}
-
-auto get_mem_info() -> mem_info & {
+auto get_mem_info() -> mem_info  {
   if (fread.is_open())
     fread.close();
 

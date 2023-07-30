@@ -1,5 +1,4 @@
 #include <proc.h>
-#include <sstream>
 
 namespace proc {
 namespace fs = std::filesystem;
@@ -14,7 +13,7 @@ std::vector<proc_info> procs{};
 
 std::unordered_map<u64, u64> old_proc_time{}, old_cpu_time{};
 
-auto get_proc_info(u64 core_num) -> std::vector<proc_info> & {
+auto get_proc_info(u64 core_num) -> std::vector<proc_info>&& {
   procs.clear();
   std::unordered_map<u64, u64> tmp_proc_time{}, tmp_cpu_time{};
 
@@ -125,23 +124,41 @@ auto get_proc_info(u64 core_num) -> std::vector<proc_info> & {
     auto calc_proc_time = cpu_t - old_proc_time[new_proc.proc_pid];
     auto calc_cpu_time = cur_cpu_time - old_cpu_time[new_proc.proc_pid];
 
-    new_proc.proc_cpu = cpu::old_totals[0] != 0
-                            ? std::clamp(std::round((double)calc_proc_time * core_num *
-                                                    100 / calc_cpu_time),
-                                         0.0, 100.0)
-                            : 0.0;
+    new_proc.proc_cpu =
+        cpu::old_totals[0] != 0
+            ? std::clamp(std::round((double)calc_proc_time * core_num * 100 /
+                                    calc_cpu_time),
+                         0.0, 100.0)
+            : 0.0;
 
-    if (new_proc.proc_name != "") {
-      procs.push_back(new_proc);
-      tmp_proc_time[new_proc.proc_pid] = cpu_t;
-      tmp_cpu_time[new_proc.proc_pid] = cur_cpu_time;
-    }
+    if (new_proc.proc_name == "")
+      continue;
+    procs.push_back(std::move(new_proc));
+    tmp_proc_time[new_proc.proc_pid] = cpu_t;
+    tmp_cpu_time[new_proc.proc_pid] = cur_cpu_time;
   }
 
   tmp_proc_time.swap(old_proc_time);
   tmp_cpu_time.swap(old_cpu_time);
 
-  return procs;
+  return std::move(procs);
+}
+
+proc_info::proc_info(proc_info &&rvalue)
+    : proc_pid(rvalue.proc_pid), proc_mem(rvalue.proc_mem),
+      proc_thread_num(rvalue.proc_thread_num), proc_cpu(rvalue.proc_cpu),
+      proc_name(std::move(rvalue.proc_name)),
+      proc_usr(std::move(rvalue.proc_usr)),
+      proc_state(std::move(rvalue.proc_state)) {}
+
+auto proc_info::operator=(proc_info &&rvalue) -> void {
+  this->proc_pid = rvalue.proc_pid;
+  this->proc_mem = rvalue.proc_mem;
+  this->proc_thread_num = rvalue.proc_thread_num;
+  this->proc_cpu = rvalue.proc_cpu;
+  this->proc_name = std::move(rvalue.proc_name);
+  this->proc_usr = std::move(rvalue.proc_usr);
+  this->proc_state = std::move(rvalue.proc_state);
 }
 
 } // namespace proc

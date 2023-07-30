@@ -6,12 +6,12 @@ static std::ifstream fread;
 
 std::vector<net_info> nets;
 
-static auto trim(std::string &str) -> void {
-  str.erase(0, str.find_first_not_of(char{32}));
-  str.erase(str.find_last_not_of(char{32}));
-}
+std::unordered_map<std::string, std::pair<u64, u64>> old_nets{};
+
+net_info new_net{};
 
 auto get_net_info() -> std::vector<net_info> & {
+  std::unordered_map<std::string, std::pair<u64, u64>> tmp_nets{};
   if (fread.is_open())
     fread.close();
 
@@ -27,29 +27,45 @@ auto get_net_info() -> std::vector<net_info> & {
     }
     if (str.find(":") == std::string::npos)
       continue;
-    std::string name = str.substr(0, str.find(":"));
-    str.erase(0, str.find(":") + 1);
-    trim(str);
-    u64 upload = std::stoull(str);
-    for (int i = 0; i < 8; ++i) {
-      str.erase(0, str.find_first_of(" "));
-      trim(str);
-    }
-    u64 download = std::stoull(str);
+    str.replace(str.find(':'), 1, " ");
+    std::istringstream ist(std::move(str));
+    ist >> new_net.net_name;
+    ist >> new_net.net_upload;
+    for (int i = 0; i < 8; ++i)
+      ist >> new_net.net_download;
 
-    if (name == "")
+    if (new_net.net_name == "")
       continue;
 
-    nets.push_back({
-        .net_name = name,
-        .net_upload = upload,
-        .net_download = download,
-    });
+    new_net.net_upload_s =
+        new_net.net_upload - old_nets[new_net.net_name].first;
+    new_net.net_download_s =
+        new_net.net_download - old_nets[new_net.net_name].second;
+
+    tmp_nets[new_net.net_name] =
+        std::make_pair(new_net.net_upload, new_net.net_download);
+
+    nets.push_back(std::move(new_net));
   }
+
+  tmp_nets.swap(old_nets);
 
   fread.close();
 
   return nets;
+}
+
+net_info::net_info(net_info &&rvalue)
+    : net_name(std::move(rvalue.net_name)), net_upload(rvalue.net_upload),
+      net_upload_s(rvalue.net_upload_s), net_download(rvalue.net_download),
+      net_download_s(rvalue.net_download_s){};
+
+auto net_info::operator=(net_info &&rvalue) -> void {
+  this->net_name = std::move(rvalue.net_name);
+  this->net_upload = rvalue.net_upload;
+  this->net_upload_s = rvalue.net_upload_s;
+  this->net_download = rvalue.net_download;
+  this->net_download_s = rvalue.net_download_s;
 }
 
 } // namespace net

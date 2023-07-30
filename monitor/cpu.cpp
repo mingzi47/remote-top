@@ -20,6 +20,7 @@ std::vector<u64> old_totals{}, old_idles{};
 cpu_info cpu{};
 
 auto get_cpu_info() -> cpu_info & {
+  cpu.clear();
 
   if (cpu.cpu_name == "") {
     // 获得 cpu 名字，核心数，Hz
@@ -98,4 +99,23 @@ auto get_cpu_info() -> cpu_info & {
 
   return cpu;
 }
+
+cpu_info::cpu_info(cpu_info &&rvalue)
+    : cpu_name(std::move(rvalue.cpu_name)), core_num(rvalue.core_num),
+      cpu_hz(rvalue.core_num), cpu_s(std::move(rvalue.cpu_s)) {}
+
+auto cpu_info::operator=(cpu_info &&rvalue) -> void {
+  this->cpu_name = std::move(rvalue.cpu_name);
+  this->core_num = rvalue.core_num;
+  this->cpu_hz = rvalue.cpu_hz;
+  this->cpu_s = std::move(rvalue.cpu_s);
+}
+
+auto cpu_info::clear() -> void {
+  this->cpu_name.clear();
+  this->core_num = 0;
+  this->cpu_hz = 0;
+  this->cpu_s.clear();
+}
+
 } // namespace cpu

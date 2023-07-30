@@ -27,8 +27,12 @@ struct proc_info {
   std::string proc_name{};
   std::string proc_usr{};
   std::string proc_state{};
+
+  proc_info() = default;
+  proc_info(proc_info &&rvalue);
+  auto operator=(proc_info &&rvalue) -> void;
 };
 
-auto get_proc_info(u64 core_num = 1) -> std::vector<proc_info> &;
+auto get_proc_info(u64 core_num = 1) -> std::vector<proc_info> &&;
 
 } // namespace proc
