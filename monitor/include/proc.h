@@ -29,6 +29,6 @@ struct proc_info {
   std::string proc_state{};
 };
 
-auto get_proc_info() -> std::vector<proc_info> &;
+auto get_proc_info(u64 core_num = 1) -> std::vector<proc_info> &;
 
 } // namespace proc

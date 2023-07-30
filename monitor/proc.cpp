@@ -14,7 +14,7 @@ std::vector<proc_info> procs{};
 
 std::unordered_map<u64, u64> old_proc_time{}, old_cpu_time{};
 
-auto get_proc_info() -> std::vector<proc_info> & {
+auto get_proc_info(u64 core_num) -> std::vector<proc_info> & {
   procs.clear();
   std::unordered_map<u64, u64> tmp_proc_time{}, tmp_cpu_time{};
 
@@ -126,7 +126,7 @@ auto get_proc_info() -> std::vector<proc_info> & {
     auto calc_cpu_time = cur_cpu_time - old_cpu_time[new_proc.proc_pid];
 
     new_proc.proc_cpu = cpu::old_totals[0] != 0
-                            ? std::clamp(std::round((double)calc_proc_time *
+                            ? std::clamp(std::round((double)calc_proc_time * core_num *
                                                     100 / calc_cpu_time),
                                          0.0, 100.0)
                             : 0.0;
