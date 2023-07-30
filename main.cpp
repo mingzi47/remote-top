@@ -1,4 +1,5 @@
 #include "mem.h"
+#include "net.h"
 #include <chrono>
 #include <cpu.h>
 #include <format>
@@ -34,6 +35,13 @@ int main() {
       "KB\nswap total: {} KB, free : {} KB\n",
       mem.mem_total, mem.mem_free, mem.mem_available, mem.mem_cached,
       mem.mem_swap_total, mem.mem_swap_free);
+
+  auto nets = net::get_net_info();
+
+  for (auto net : nets) {
+    std::cout << std::format("{}, upload : {} KB, download : {} KB\n",
+                             net.net_name, net.net_upload, net.net_download);
+  }
 
   return 0;
 }
