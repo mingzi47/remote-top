@@ -1,7 +1,14 @@
 #pragma once
+#include <algorithm>
+#include <cctype>
+#include <cpu.h>
 #include <filesystem>
+#include <fstream>
 #include <pwd.h>
+#include <sstream>
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 /*
   files
@@ -9,19 +16,19 @@
     /proc/cmdline
 */
 
-namespace rtop {
-struct proc {
-  int m_pid;
-  int m_mem;
-  int m_cpu;
-  int m_utime;
-  int m_stime;
-  int m_cutime;
-  int m_cstime;
-  std::string m_name;
-  std::string m_usr;
-  std::string m_cmdline;
-  std::string m_state;
+namespace proc {
+using u64 = uint64_t;
+
+struct proc_info {
+  u64 proc_pid{0};
+  u64 proc_mem{0};
+  u64 proc_thread_num{0};
+  double proc_cpu{0};
+  std::string proc_name{};
+  std::string proc_usr{};
+  std::string proc_state{};
 };
 
-} // namespace rtop
+auto get_proc_info() -> std::vector<proc_info> &;
+
+} // namespace proc

@@ -1,10 +1,12 @@
 #include "mem.h"
 #include "net.h"
+#include "proc.h"
 #include <chrono>
 #include <cpu.h>
 #include <format>
 #include <iostream>
 #include <thread>
+#include <string>
 
 using namespace std::chrono_literals;
 
@@ -43,5 +45,18 @@ int main() {
                              net.net_name, net.net_upload, net.net_download);
   }
 
+  auto procs = proc::get_proc_info();
+  for (int i = 1; i <= 2; ++i) {
+    std::this_thread::sleep_for(200ms);
+    procs = proc::get_proc_info();
+  }
+
+  for (auto proc : procs) {
+    std::cout << std::format(
+        "{}, {}, {}, {}, {}, {}, {:.1f}\n", proc.proc_pid, proc.proc_name, proc.proc_usr,
+        proc.proc_state, proc.proc_thread_num, proc.proc_mem, proc.proc_cpu);
+  }
+
+  std::cout << sysconf(_SC_CLK_TCK) << "\n";
   return 0;
 }

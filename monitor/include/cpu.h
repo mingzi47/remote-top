@@ -32,11 +32,7 @@ namespace cpu {
 
 using u64 = uint64_t;
 
-extern std::ifstream cread;
-
-// extern std::array time_name;
-
-// extern std::array<u64, 9> old_times;
+extern std::vector<u64> old_totals;
 
 struct cpu_info {
   std::string cpu_name{};
