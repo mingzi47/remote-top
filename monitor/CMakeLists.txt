@@ -1,6 +1,4 @@
 include_directories(./include)
 
-file(GLOB srcmonitor *.cpp)
-
-add_library(monitor STATIC srcmonitor)
+add_library(monitor STATIC monitor_run.cpp cpu.cpp)
 
