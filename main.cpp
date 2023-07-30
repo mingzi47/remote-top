@@ -1,8 +1,9 @@
+#include "mem.h"
+#include <chrono>
 #include <cpu.h>
 #include <format>
 #include <iostream>
 #include <thread>
-#include <chrono>
 
 using namespace std::chrono_literals;
 
@@ -19,10 +20,20 @@ int main() {
 
   for (int i = 0; i <= cpu.core_num; ++i) {
     std::string name = "";
-    if (i == 0) name = "cpu";
-    else name = std::format("cpu{}", i - 1);
+    if (i == 0)
+      name = "cpu";
+    else
+      name = std::format("cpu{}", i - 1);
     std::cout << std::format("{:s}, {:.2f}%\n", name, cpu.cpu_s[i]);
   }
+
+  auto mem = mem::get_mem_info();
+
+  std::cout << std::format(
+      "mem total : {} KB, free : {} KB, available : {} KB\ncache : {} "
+      "KB\nswap total: {} KB, free : {} KB\n",
+      mem.mem_total, mem.mem_free, mem.mem_available, mem.mem_cached,
+      mem.mem_swap_total, mem.mem_swap_free);
 
   return 0;
 }

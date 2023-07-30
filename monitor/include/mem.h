@@ -1,19 +1,23 @@
 #pragma once
 #include <cstdint>
+#include <fstream>
+#include <string>
 
 /*
   files
     /proc/meminfo
 */
 
-namespace rtop {
-struct mem {
-  using i64 = int64_t;
-  i64 m_total;
-  i64 m_free;
-  i64 m_available;
-  i64 m_cached;
-  i64 m_swap_used;
-  i64 m_swap_free;
+namespace mem {
+struct mem_info {
+  using u64 = uint64_t;
+  u64 mem_total;
+  u64 mem_free;
+  u64 mem_available;
+  u64 mem_cached;
+  u64 mem_swap_total;
+  u64 mem_swap_free;
 };
-} // namespace rtop
+
+auto get_mem_info() -> mem_info&;
+} // namespace mem
