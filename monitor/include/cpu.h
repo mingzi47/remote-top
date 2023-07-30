@@ -1,11 +1,16 @@
 #pragma once
+#include <algorithm>
 #include <array>
+#include <cctype>
+#include <cmath>
 #include <cstdint>
-#include <string>
-#include <unordered_map>
-#include <vector>
-#include <fstream>
 #include <deque>
+#include <exception>
+#include <fstream>
+#include <iostream>
+#include <numeric>
+#include <string>
+#include <vector>
 
 /*
   files

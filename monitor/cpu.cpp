@@ -1,11 +1,4 @@
-#include <algorithm>
-#include <cctype>
-#include <cmath>
 #include <cpu.h>
-#include <exception>
-#include <iostream>
-#include <numeric>
-#include <string>
 
 namespace cpu {
 
