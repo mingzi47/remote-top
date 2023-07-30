@@ -1,4 +1,5 @@
 
+
 build
 
 # Prerequisites
@@ -33,3 +34,5 @@ build
 *.exe
 *.out
 *.app
+.cache
+.vscode
