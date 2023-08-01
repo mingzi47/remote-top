@@ -5,6 +5,10 @@
 
 namespace monitor {
 
+struct monitor_info;
+
+extern monitor_info monitor_value;
+
 struct monitor_info {
   cpu::cpu_info cpus{};
   mem::mem_info mem{};

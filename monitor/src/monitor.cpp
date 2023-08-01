@@ -4,15 +4,15 @@ using namespace std::chrono_literals;
 
 namespace monitor {
 
-monitor_info value{};
+monitor_info monitor_value{};
 
 auto get_monitor_info() -> monitor_info& {
 
-  value.cpus = std::move(cpu::get_cpu_info());
-  value.mem = mem::get_mem_info();
-  value.nets = std::move(net::get_net_info());
-  value.procs = std::move(proc::get_proc_info());
-  return value;
+  monitor_value.cpus = std::move(cpu::get_cpu_info());
+  monitor_value.mem = mem::get_mem_info();
+  monitor_value.nets = std::move(net::get_net_info());
+  monitor_value.procs = std::move(proc::get_proc_info());
+  return monitor_value;
 }
 
 monitor_info::monitor_info(const monitor_info &rvalue) {

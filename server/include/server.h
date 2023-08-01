@@ -12,6 +12,7 @@
 namespace server {
 
 extern std::shared_mutex RWLock;
+extern monitor::monitor_info monitor_value;
 
 class MonitorImpl final : public pb::Monitor::Service {
 public:

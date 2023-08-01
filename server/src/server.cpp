@@ -3,6 +3,7 @@
 namespace server {
 
 std::shared_mutex RWLock;
+monitor::monitor_info monitor_value;
 
 static auto get_cpu_class(cpu::cpu_info &cpu) -> pb::Cpu {
   pb::Cpu res;
@@ -54,8 +55,8 @@ auto MonitorImpl::GetMonitor(grpc::ServerContext *context,
     -> grpc::Status {
   monitor::monitor_info res{};
   {
-    std::shared_lock<std::shared_mutex> lock(RWLock);
-    res = monitor::get_monitor_info();
+    std::shared_lock<std::shared_mutex> RLock(RWLock);
+    res = server::monitor_value;
   }
   pb::Cpu cpu = get_cpu_class(res.cpus);
   pb::Mem mem = get_mem_class(res.mem);
