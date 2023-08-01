@@ -13,7 +13,7 @@ std::vector<proc_info> procs{};
 
 std::unordered_map<u64, u64> old_proc_time{}, old_cpu_time{};
 
-auto get_proc_info(u64 core_num) -> std::vector<proc_info>&& {
+auto get_proc_info(u64 core_num) -> std::vector<proc_info> && {
   procs.clear();
   std::unordered_map<u64, u64> tmp_proc_time{}, tmp_cpu_time{};
 
@@ -144,14 +144,25 @@ auto get_proc_info(u64 core_num) -> std::vector<proc_info>&& {
   return std::move(procs);
 }
 
-proc_info::proc_info(proc_info &&rvalue)
-    : proc_pid(rvalue.proc_pid), proc_mem(rvalue.proc_mem),
-      proc_thread_num(rvalue.proc_thread_num), proc_cpu(rvalue.proc_cpu),
-      proc_name(std::move(rvalue.proc_name)),
-      proc_usr(std::move(rvalue.proc_usr)),
-      proc_state(std::move(rvalue.proc_state)) {}
+proc_info::proc_info(const proc_info &rvalue) { this->operator=(rvalue); }
 
-auto proc_info::operator=(proc_info &&rvalue) -> void {
+aauto proc_info::operator=(const proc_info &rvalue) -> void {
+  this->proc_pid = rvalue.proc_pid;
+  this->proc_mem = rvalue.proc_mem;
+  this->proc_thread_num = rvalue.proc_thread_num;
+  this->proc_cpu = rvalue.proc_cpu;
+  this->proc_name = rvalue.proc_name;
+  this->proc_usr = rvalue.proc_usr;
+  this->proc_state = rvalue.proc_state;
+}
+
+proc_info::proc_info(proc_info &&rvalue) noexcept { this->swap(rvalue); };
+
+auto proc_info::operator=(proc_info &&rvalue) noexcept -> void {
+  this->swap(rvalue);
+}
+
+auto proc_info::swap(proc_info &rvalue) noexcept -> void {
   this->proc_pid = rvalue.proc_pid;
   this->proc_mem = rvalue.proc_mem;
   this->proc_thread_num = rvalue.proc_thread_num;

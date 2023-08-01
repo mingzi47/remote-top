@@ -15,6 +15,17 @@ auto get_monitor_info() -> monitor_info& {
   return value;
 }
 
+monitor_info::monitor_info(const monitor_info &rvalue) {
+  this->operator=(rvalue);
+}
+
+auto monitor_info::operator=(const monitor_info &rvalue) -> void {
+  cpus = rvalue.cpus;
+  mem = rvalue.mem;
+  nets = rvalue.nets;
+  procs = rvalue.procs;
+}
+
 monitor_info::monitor_info(monitor_info &&rvalue) noexcept {
   this->swap(rvalue);
 }

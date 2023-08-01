@@ -22,8 +22,14 @@ struct net_info {
   u64 net_download_s{0};
 
   net_info() = default;
-  net_info(net_info &&rvalue); 
-  auto operator=(net_info &&rvalue) -> void;
+
+  net_info(const net_info &rvalue); 
+  auto operator=(const net_info &rvalue) -> void;
+
+  net_info(net_info &&rvalue) noexcept; 
+  auto operator=(net_info &&rvalue) noexcept -> void;
+
+  auto swap(net_info &rvalue) noexcept -> void;
 };
 
 auto get_net_info() -> std::vector<net_info>&;

@@ -29,8 +29,14 @@ struct proc_info {
   std::string proc_state{};
 
   proc_info() = default;
-  proc_info(proc_info &&rvalue);
-  auto operator=(proc_info &&rvalue) -> void;
+
+  proc_info(const proc_info &rvalue);
+  auto operator=(const proc_info &rvalue) -> void;
+
+  proc_info(proc_info &&rvalue) noexcept;
+  auto operator=(proc_info &&rvalue) noexcept -> void;
+
+  auto swap(proc_info &rvalue) noexcept -> void;
 };
 
 auto get_proc_info(u64 core_num = 1) -> std::vector<proc_info> &&;

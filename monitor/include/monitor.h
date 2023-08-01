@@ -13,6 +13,9 @@ struct monitor_info {
 
   monitor_info() = default;
 
+  monitor_info(const monitor_info &rvalue);
+  auto operator=(const monitor_info &rvalue) -> void;
+
   monitor_info(monitor_info &&rvalue) noexcept;
   auto operator=(monitor_info &&rvalue) noexcept -> void;
 

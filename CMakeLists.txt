@@ -13,10 +13,14 @@ endif()
 project(rtop LANGUAGES CXX )
 
 include_directories(${PROJECT_SOURCE_DIR}/monitor/include)
+include_directories(${PROJECT_SOURCE_DIR}/server/include)
+include_directories(${PROJECT_SOURCE_DIR}/server/protos)
 
 add_subdirectory(monitor)
 
-add_executable(test main.cpp)
+add_subdirectory(server)
 
-target_link_libraries(test monitor)
+# add_executable(test main.cpp)
+
+# target_link_libraries(test monitor)
 

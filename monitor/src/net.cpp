@@ -55,12 +55,23 @@ auto get_net_info() -> std::vector<net_info> & {
   return nets;
 }
 
-net_info::net_info(net_info &&rvalue)
-    : net_name(std::move(rvalue.net_name)), net_upload(rvalue.net_upload),
-      net_upload_s(rvalue.net_upload_s), net_download(rvalue.net_download),
-      net_download_s(rvalue.net_download_s){};
+net_info::net_info(const net_info &rvalue) { this->operator=(rvalue); }
 
-auto net_info::operator=(net_info &&rvalue) -> void {
+auto net_info::operator=(const net_info &rvalue) -> void {
+  this->net_name = rvalue.net_name;
+  this->net_upload = rvalue.net_upload;
+  this->net_upload_s = rvalue.net_upload_s;
+  this->net_download = rvalue.net_download;
+  this->net_download_s = rvalue.net_download_s;
+}
+
+net_info::net_info(net_info &&rvalue) noexcept { this->swap(rvalue); };
+
+auto net_info::operator=(net_info &&rvalue) noexcept -> void {
+  this->swap(rvalue);
+}
+
+auto net_info::swap(net_info &rvalue) noexcept -> void {
   this->net_name = std::move(rvalue.net_name);
   this->net_upload = rvalue.net_upload;
   this->net_upload_s = rvalue.net_upload_s;

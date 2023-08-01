@@ -100,15 +100,19 @@ auto get_cpu_info() -> cpu_info & {
   return cpu;
 }
 
-cpu_info::cpu_info(cpu_info &&rvalue)
-    : cpu_name(std::move(rvalue.cpu_name)), core_num(rvalue.core_num),
-      cpu_hz(rvalue.core_num), cpu_s(std::move(rvalue.cpu_s)) {}
+cpu_info::cpu_info(const cpu_info &rvalue) { this->operator=(rvalue); }
 
-auto cpu_info::operator=(cpu_info &&rvalue) -> void {
-  this->cpu_name = std::move(rvalue.cpu_name);
-  this->core_num = rvalue.core_num;
-  this->cpu_hz = rvalue.cpu_hz;
-  this->cpu_s = std::move(rvalue.cpu_s);
+auto cpu_info::operator=(const cpu_info &rvalue) -> void {
+  cpu_name = rvalue.cpu_name;
+  core_num = rvalue.core_num;
+  cpu_hz = rvalue.cpu_hz;
+  cpu_s = rvalue.cpu_s;
+}
+
+cpu_info::cpu_info(cpu_info &&rvalue) noexcept { this->swap(rvalue); }
+
+auto cpu_info::operator=(cpu_info &&rvalue) noexcept -> void {
+  this->swap(rvalue);
 }
 
 auto cpu_info::clear() -> void {
@@ -116,6 +120,13 @@ auto cpu_info::clear() -> void {
   this->core_num = 0;
   this->cpu_hz = 0;
   this->cpu_s.clear();
+}
+
+auto cpu_info::swap(cpu_info &rvalue) noexcept -> void {
+  this->cpu_name = std::move(rvalue.cpu_name);
+  this->core_num = rvalue.core_num;
+  this->cpu_hz = rvalue.cpu_hz;
+  this->cpu_s = std::move(rvalue.cpu_s);
 }
 
 } // namespace cpu

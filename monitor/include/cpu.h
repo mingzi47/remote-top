@@ -41,9 +41,14 @@ struct cpu_info {
   std::vector<double> cpu_s{};
 
   cpu_info() = default;
-  cpu_info(cpu_info&& rvalue);
 
-  auto operator=(cpu_info&& rvalue) -> void;
+  cpu_info(const cpu_info& rvalue);
+  auto operator=(const cpu_info& rvalue) -> void;
+
+  cpu_info(cpu_info&& rvalue) noexcept;
+  auto operator=(cpu_info&& rvalue) noexcept -> void;
+
+  auto swap(cpu_info &rvalue) noexcept -> void;
 
   auto clear() -> void;
 };
