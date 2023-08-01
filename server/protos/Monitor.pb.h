@@ -64,9 +64,6 @@ extern NetDefaultTypeInternal _Net_default_instance_;
 class Proc;
 struct ProcDefaultTypeInternal;
 extern ProcDefaultTypeInternal _Proc_default_instance_;
-class Reponse;
-struct ReponseDefaultTypeInternal;
-extern ReponseDefaultTypeInternal _Reponse_default_instance_;
 class Request;
 struct RequestDefaultTypeInternal;
 extern RequestDefaultTypeInternal _Request_default_instance_;
@@ -80,8 +77,6 @@ template <>
 ::pb::Net* Arena::CreateMaybeMessage<::pb::Net>(Arena*);
 template <>
 ::pb::Proc* Arena::CreateMaybeMessage<::pb::Proc>(Arena*);
-template <>
-::pb::Reponse* Arena::CreateMaybeMessage<::pb::Reponse>(Arena*);
 template <>
 ::pb::Request* Arena::CreateMaybeMessage<::pb::Request>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
@@ -217,226 +212,6 @@ class Request final :
   friend struct ::TableStruct_Monitor_2eproto;
 };// -------------------------------------------------------------------
 
-class Reponse final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pb.Reponse) */ {
- public:
-  inline Reponse() : Reponse(nullptr) {}
-  ~Reponse() override;
-  template<typename = void>
-  explicit PROTOBUF_CONSTEXPR Reponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  Reponse(const Reponse& from);
-  Reponse(Reponse&& from) noexcept
-    : Reponse() {
-    *this = ::std::move(from);
-  }
-
-  inline Reponse& operator=(const Reponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline Reponse& operator=(Reponse&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()
-  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
-        && GetOwningArena() != nullptr
-  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
-    ) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance);
-  }
-  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const Reponse& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const Reponse* internal_default_instance() {
-    return reinterpret_cast<const Reponse*>(
-               &_Reponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    1;
-
-  friend void swap(Reponse& a, Reponse& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(Reponse* other) {
-    if (other == this) return;
-  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() != nullptr &&
-        GetOwningArena() == other->GetOwningArena()) {
-   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
-    if (GetOwningArena() == other->GetOwningArena()) {
-  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(Reponse* other) {
-    if (other == this) return;
-    ABSL_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  Reponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
-    return CreateMaybeMessage<Reponse>(arena);
-  }
-  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
-  void CopyFrom(const Reponse& from);
-  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom( const Reponse& from) {
-    Reponse::MergeImpl(*this, from);
-  }
-  private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
-  public:
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  ::size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::uint8_t* _InternalSerialize(
-      ::uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
-
-  private:
-  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(Reponse* other);
-
-  private:
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() {
-    return "pb.Reponse";
-  }
-  protected:
-  explicit Reponse(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  static const ClassData _class_data_;
-  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kNetFieldNumber = 3,
-    kProcFieldNumber = 4,
-    kCpuFieldNumber = 1,
-    kMemFieldNumber = 2,
-  };
-  // repeated .pb.Net net = 3;
-  int net_size() const;
-  private:
-  int _internal_net_size() const;
-
-  public:
-  void clear_net() ;
-  ::pb::Net* mutable_net(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pb::Net >*
-      mutable_net();
-  private:
-  const ::pb::Net& _internal_net(int index) const;
-  ::pb::Net* _internal_add_net();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pb::Net>& _internal_net() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pb::Net>* _internal_mutable_net();
-  public:
-  const ::pb::Net& net(int index) const;
-  ::pb::Net* add_net();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pb::Net >&
-      net() const;
-  // repeated .pb.Proc proc = 4;
-  int proc_size() const;
-  private:
-  int _internal_proc_size() const;
-
-  public:
-  void clear_proc() ;
-  ::pb::Proc* mutable_proc(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pb::Proc >*
-      mutable_proc();
-  private:
-  const ::pb::Proc& _internal_proc(int index) const;
-  ::pb::Proc* _internal_add_proc();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pb::Proc>& _internal_proc() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pb::Proc>* _internal_mutable_proc();
-  public:
-  const ::pb::Proc& proc(int index) const;
-  ::pb::Proc* add_proc();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pb::Proc >&
-      proc() const;
-  // .pb.Cpu cpu = 1;
-  bool has_cpu() const;
-  void clear_cpu() ;
-  const ::pb::Cpu& cpu() const;
-  PROTOBUF_NODISCARD ::pb::Cpu* release_cpu();
-  ::pb::Cpu* mutable_cpu();
-  void set_allocated_cpu(::pb::Cpu* cpu);
-  private:
-  const ::pb::Cpu& _internal_cpu() const;
-  ::pb::Cpu* _internal_mutable_cpu();
-  public:
-  void unsafe_arena_set_allocated_cpu(
-      ::pb::Cpu* cpu);
-  ::pb::Cpu* unsafe_arena_release_cpu();
-  // .pb.Mem mem = 2;
-  bool has_mem() const;
-  void clear_mem() ;
-  const ::pb::Mem& mem() const;
-  PROTOBUF_NODISCARD ::pb::Mem* release_mem();
-  ::pb::Mem* mutable_mem();
-  void set_allocated_mem(::pb::Mem* mem);
-  private:
-  const ::pb::Mem& _internal_mem() const;
-  ::pb::Mem* _internal_mutable_mem();
-  public:
-  void unsafe_arena_set_allocated_mem(
-      ::pb::Mem* mem);
-  ::pb::Mem* unsafe_arena_release_mem();
-  // @@protoc_insertion_point(class_scope:pb.Reponse)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  struct Impl_ {
-    ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
-    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pb::Net > net_;
-    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pb::Proc > proc_;
-    ::pb::Cpu* cpu_;
-    ::pb::Mem* mem_;
-  };
-  union { Impl_ _impl_; };
-  friend struct ::TableStruct_Monitor_2eproto;
-};// -------------------------------------------------------------------
-
 class Cpu final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:pb.Cpu) */ {
  public:
@@ -493,7 +268,7 @@ class Cpu final :
                &_Cpu_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    1;
 
   friend void swap(Cpu& a, Cpu& b) {
     a.Swap(&b);
@@ -704,7 +479,7 @@ class Mem final :
                &_Mem_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    2;
 
   friend void swap(Mem& a, Mem& b) {
     a.Swap(&b);
@@ -919,7 +694,7 @@ class Net final :
                &_Net_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    3;
 
   friend void swap(Net& a, Net& b) {
     a.Swap(&b);
@@ -1132,7 +907,7 @@ class Proc final :
                &_Proc_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    4;
 
   friend void swap(Proc& a, Proc& b) {
     a.Swap(&b);
@@ -1348,280 +1123,6 @@ class Proc final :
 // -------------------------------------------------------------------
 
 // Request
-
-// -------------------------------------------------------------------
-
-// Reponse
-
-// .pb.Cpu cpu = 1;
-inline bool Reponse::has_cpu() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.cpu_ != nullptr);
-  return value;
-}
-inline void Reponse::clear_cpu() {
-  if (_impl_.cpu_ != nullptr) _impl_.cpu_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000001u;
-}
-inline const ::pb::Cpu& Reponse::_internal_cpu() const {
-  const ::pb::Cpu* p = _impl_.cpu_;
-  return p != nullptr ? *p : reinterpret_cast<const ::pb::Cpu&>(
-      ::pb::_Cpu_default_instance_);
-}
-inline const ::pb::Cpu& Reponse::cpu() const {
-  // @@protoc_insertion_point(field_get:pb.Reponse.cpu)
-  return _internal_cpu();
-}
-inline void Reponse::unsafe_arena_set_allocated_cpu(
-    ::pb::Cpu* cpu) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.cpu_);
-  }
-  _impl_.cpu_ = cpu;
-  if (cpu) {
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pb.Reponse.cpu)
-}
-inline ::pb::Cpu* Reponse::release_cpu() {
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::pb::Cpu* temp = _impl_.cpu_;
-  _impl_.cpu_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::pb::Cpu* Reponse::unsafe_arena_release_cpu() {
-  // @@protoc_insertion_point(field_release:pb.Reponse.cpu)
-  _impl_._has_bits_[0] &= ~0x00000001u;
-  ::pb::Cpu* temp = _impl_.cpu_;
-  _impl_.cpu_ = nullptr;
-  return temp;
-}
-inline ::pb::Cpu* Reponse::_internal_mutable_cpu() {
-  _impl_._has_bits_[0] |= 0x00000001u;
-  if (_impl_.cpu_ == nullptr) {
-    auto* p = CreateMaybeMessage<::pb::Cpu>(GetArenaForAllocation());
-    _impl_.cpu_ = p;
-  }
-  return _impl_.cpu_;
-}
-inline ::pb::Cpu* Reponse::mutable_cpu() {
-  ::pb::Cpu* _msg = _internal_mutable_cpu();
-  // @@protoc_insertion_point(field_mutable:pb.Reponse.cpu)
-  return _msg;
-}
-inline void Reponse::set_allocated_cpu(::pb::Cpu* cpu) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete _impl_.cpu_;
-  }
-  if (cpu) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(cpu);
-    if (message_arena != submessage_arena) {
-      cpu = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, cpu, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000001u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000001u;
-  }
-  _impl_.cpu_ = cpu;
-  // @@protoc_insertion_point(field_set_allocated:pb.Reponse.cpu)
-}
-
-// .pb.Mem mem = 2;
-inline bool Reponse::has_mem() const {
-  bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
-  PROTOBUF_ASSUME(!value || _impl_.mem_ != nullptr);
-  return value;
-}
-inline void Reponse::clear_mem() {
-  if (_impl_.mem_ != nullptr) _impl_.mem_->Clear();
-  _impl_._has_bits_[0] &= ~0x00000002u;
-}
-inline const ::pb::Mem& Reponse::_internal_mem() const {
-  const ::pb::Mem* p = _impl_.mem_;
-  return p != nullptr ? *p : reinterpret_cast<const ::pb::Mem&>(
-      ::pb::_Mem_default_instance_);
-}
-inline const ::pb::Mem& Reponse::mem() const {
-  // @@protoc_insertion_point(field_get:pb.Reponse.mem)
-  return _internal_mem();
-}
-inline void Reponse::unsafe_arena_set_allocated_mem(
-    ::pb::Mem* mem) {
-  if (GetArenaForAllocation() == nullptr) {
-    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(_impl_.mem_);
-  }
-  _impl_.mem_ = mem;
-  if (mem) {
-    _impl_._has_bits_[0] |= 0x00000002u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000002u;
-  }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:pb.Reponse.mem)
-}
-inline ::pb::Mem* Reponse::release_mem() {
-  _impl_._has_bits_[0] &= ~0x00000002u;
-  ::pb::Mem* temp = _impl_.mem_;
-  _impl_.mem_ = nullptr;
-#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
-  auto* old =  reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(temp);
-  temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  if (GetArenaForAllocation() == nullptr) { delete old; }
-#else  // PROTOBUF_FORCE_COPY_IN_RELEASE
-  if (GetArenaForAllocation() != nullptr) {
-    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
-  }
-#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
-  return temp;
-}
-inline ::pb::Mem* Reponse::unsafe_arena_release_mem() {
-  // @@protoc_insertion_point(field_release:pb.Reponse.mem)
-  _impl_._has_bits_[0] &= ~0x00000002u;
-  ::pb::Mem* temp = _impl_.mem_;
-  _impl_.mem_ = nullptr;
-  return temp;
-}
-inline ::pb::Mem* Reponse::_internal_mutable_mem() {
-  _impl_._has_bits_[0] |= 0x00000002u;
-  if (_impl_.mem_ == nullptr) {
-    auto* p = CreateMaybeMessage<::pb::Mem>(GetArenaForAllocation());
-    _impl_.mem_ = p;
-  }
-  return _impl_.mem_;
-}
-inline ::pb::Mem* Reponse::mutable_mem() {
-  ::pb::Mem* _msg = _internal_mutable_mem();
-  // @@protoc_insertion_point(field_mutable:pb.Reponse.mem)
-  return _msg;
-}
-inline void Reponse::set_allocated_mem(::pb::Mem* mem) {
-  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
-  if (message_arena == nullptr) {
-    delete _impl_.mem_;
-  }
-  if (mem) {
-    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
-        ::PROTOBUF_NAMESPACE_ID::Arena::InternalGetOwningArena(mem);
-    if (message_arena != submessage_arena) {
-      mem = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
-          message_arena, mem, submessage_arena);
-    }
-    _impl_._has_bits_[0] |= 0x00000002u;
-  } else {
-    _impl_._has_bits_[0] &= ~0x00000002u;
-  }
-  _impl_.mem_ = mem;
-  // @@protoc_insertion_point(field_set_allocated:pb.Reponse.mem)
-}
-
-// repeated .pb.Net net = 3;
-inline int Reponse::_internal_net_size() const {
-  return _impl_.net_.size();
-}
-inline int Reponse::net_size() const {
-  return _internal_net_size();
-}
-inline void Reponse::clear_net() {
-  _internal_mutable_net()->Clear();
-}
-inline ::pb::Net* Reponse::mutable_net(int index) {
-  // @@protoc_insertion_point(field_mutable:pb.Reponse.net)
-  return _internal_mutable_net()->Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pb::Net >*
-Reponse::mutable_net() {
-  // @@protoc_insertion_point(field_mutable_list:pb.Reponse.net)
-  return _internal_mutable_net();
-}
-inline const ::pb::Net& Reponse::_internal_net(int index) const {
-  return _internal_net().Get(index);
-}
-inline const ::pb::Net& Reponse::net(int index) const {
-  // @@protoc_insertion_point(field_get:pb.Reponse.net)
-  return _internal_net(index);
-}
-inline ::pb::Net* Reponse::_internal_add_net() {
-  return _internal_mutable_net()->Add();
-}
-inline ::pb::Net* Reponse::add_net() {
-  ::pb::Net* _add = _internal_add_net();
-  // @@protoc_insertion_point(field_add:pb.Reponse.net)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pb::Net >&
-Reponse::net() const {
-  // @@protoc_insertion_point(field_list:pb.Reponse.net)
-  return _internal_net();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pb::Net>&
-Reponse::_internal_net() const {
-  return _impl_.net_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pb::Net>*
-Reponse::_internal_mutable_net() {
-  return &_impl_.net_;
-}
-
-// repeated .pb.Proc proc = 4;
-inline int Reponse::_internal_proc_size() const {
-  return _impl_.proc_.size();
-}
-inline int Reponse::proc_size() const {
-  return _internal_proc_size();
-}
-inline void Reponse::clear_proc() {
-  _internal_mutable_proc()->Clear();
-}
-inline ::pb::Proc* Reponse::mutable_proc(int index) {
-  // @@protoc_insertion_point(field_mutable:pb.Reponse.proc)
-  return _internal_mutable_proc()->Mutable(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pb::Proc >*
-Reponse::mutable_proc() {
-  // @@protoc_insertion_point(field_mutable_list:pb.Reponse.proc)
-  return _internal_mutable_proc();
-}
-inline const ::pb::Proc& Reponse::_internal_proc(int index) const {
-  return _internal_proc().Get(index);
-}
-inline const ::pb::Proc& Reponse::proc(int index) const {
-  // @@protoc_insertion_point(field_get:pb.Reponse.proc)
-  return _internal_proc(index);
-}
-inline ::pb::Proc* Reponse::_internal_add_proc() {
-  return _internal_mutable_proc()->Add();
-}
-inline ::pb::Proc* Reponse::add_proc() {
-  ::pb::Proc* _add = _internal_add_proc();
-  // @@protoc_insertion_point(field_add:pb.Reponse.proc)
-  return _add;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::pb::Proc >&
-Reponse::proc() const {
-  // @@protoc_insertion_point(field_list:pb.Reponse.proc)
-  return _internal_proc();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pb::Proc>&
-Reponse::_internal_proc() const {
-  return _impl_.proc_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<::pb::Proc>*
-Reponse::_internal_mutable_proc() {
-  return &_impl_.proc_;
-}
 
 // -------------------------------------------------------------------
 

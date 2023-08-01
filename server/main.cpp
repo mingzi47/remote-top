@@ -11,7 +11,7 @@ auto main() -> int {
     while (true) {
       monitor::get_monitor_info();
       {
-        std::unique_lock Wlock(server::RWLock);
+        std::unique_lock<std::shared_mutex> Wlock(server::RWLock);
         server::monitor_value = std::move(monitor::monitor_value);
       }
       std::this_thread::sleep_for(1s);

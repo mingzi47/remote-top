@@ -35,41 +35,107 @@ class Monitor final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    virtual ::grpc::Status GetMonitor(::grpc::ClientContext* context, const ::pb::Request& request, ::pb::Reponse* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::Reponse>> AsyncGetMonitor(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::Reponse>>(AsyncGetMonitorRaw(context, request, cq));
+    virtual ::grpc::Status GetCpu(::grpc::ClientContext* context, const ::pb::Request& request, ::pb::Cpu* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::Cpu>> AsyncGetCpu(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::Cpu>>(AsyncGetCpuRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::Reponse>> PrepareAsyncGetMonitor(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::Reponse>>(PrepareAsyncGetMonitorRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::Cpu>> PrepareAsyncGetCpu(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::Cpu>>(PrepareAsyncGetCpuRaw(context, request, cq));
+    }
+    virtual ::grpc::Status GetMem(::grpc::ClientContext* context, const ::pb::Request& request, ::pb::Mem* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::Mem>> AsyncGetMem(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::Mem>>(AsyncGetMemRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::Mem>> PrepareAsyncGetMem(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::pb::Mem>>(PrepareAsyncGetMemRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::pb::Net>> GetNets(::grpc::ClientContext* context, const ::pb::Request& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::pb::Net>>(GetNetsRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::Net>> AsyncGetNets(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::Net>>(AsyncGetNetsRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::Net>> PrepareAsyncGetNets(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::Net>>(PrepareAsyncGetNetsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::pb::Proc>> GetProcs(::grpc::ClientContext* context, const ::pb::Request& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::pb::Proc>>(GetProcsRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::Proc>> AsyncGetProcs(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::Proc>>(AsyncGetProcsRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::Proc>> PrepareAsyncGetProcs(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::pb::Proc>>(PrepareAsyncGetProcsRaw(context, request, cq));
     }
     class async_interface {
      public:
       virtual ~async_interface() {}
-      virtual void GetMonitor(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Reponse* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetMonitor(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Reponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void GetCpu(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Cpu* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetCpu(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Cpu* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void GetMem(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Mem* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetMem(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Mem* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void GetNets(::grpc::ClientContext* context, const ::pb::Request* request, ::grpc::ClientReadReactor< ::pb::Net>* reactor) = 0;
+      virtual void GetProcs(::grpc::ClientContext* context, const ::pb::Request* request, ::grpc::ClientReadReactor< ::pb::Proc>* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
    private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::Reponse>* AsyncGetMonitorRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::Reponse>* PrepareAsyncGetMonitorRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::Cpu>* AsyncGetCpuRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::Cpu>* PrepareAsyncGetCpuRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::Mem>* AsyncGetMemRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::pb::Mem>* PrepareAsyncGetMemRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::pb::Net>* GetNetsRaw(::grpc::ClientContext* context, const ::pb::Request& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::pb::Net>* AsyncGetNetsRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::pb::Net>* PrepareAsyncGetNetsRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::pb::Proc>* GetProcsRaw(::grpc::ClientContext* context, const ::pb::Request& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::pb::Proc>* AsyncGetProcsRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::pb::Proc>* PrepareAsyncGetProcsRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
-    ::grpc::Status GetMonitor(::grpc::ClientContext* context, const ::pb::Request& request, ::pb::Reponse* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::Reponse>> AsyncGetMonitor(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::Reponse>>(AsyncGetMonitorRaw(context, request, cq));
+    ::grpc::Status GetCpu(::grpc::ClientContext* context, const ::pb::Request& request, ::pb::Cpu* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::Cpu>> AsyncGetCpu(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::Cpu>>(AsyncGetCpuRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::Reponse>> PrepareAsyncGetMonitor(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::Reponse>>(PrepareAsyncGetMonitorRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::Cpu>> PrepareAsyncGetCpu(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::Cpu>>(PrepareAsyncGetCpuRaw(context, request, cq));
+    }
+    ::grpc::Status GetMem(::grpc::ClientContext* context, const ::pb::Request& request, ::pb::Mem* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::Mem>> AsyncGetMem(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::Mem>>(AsyncGetMemRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::Mem>> PrepareAsyncGetMem(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::pb::Mem>>(PrepareAsyncGetMemRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReader< ::pb::Net>> GetNets(::grpc::ClientContext* context, const ::pb::Request& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::pb::Net>>(GetNetsRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::Net>> AsyncGetNets(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::Net>>(AsyncGetNetsRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::Net>> PrepareAsyncGetNets(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::Net>>(PrepareAsyncGetNetsRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReader< ::pb::Proc>> GetProcs(::grpc::ClientContext* context, const ::pb::Request& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::pb::Proc>>(GetProcsRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::Proc>> AsyncGetProcs(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::Proc>>(AsyncGetProcsRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::Proc>> PrepareAsyncGetProcs(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::pb::Proc>>(PrepareAsyncGetProcsRaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
      public:
-      void GetMonitor(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Reponse* response, std::function<void(::grpc::Status)>) override;
-      void GetMonitor(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Reponse* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void GetCpu(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Cpu* response, std::function<void(::grpc::Status)>) override;
+      void GetCpu(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Cpu* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void GetMem(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Mem* response, std::function<void(::grpc::Status)>) override;
+      void GetMem(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Mem* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void GetNets(::grpc::ClientContext* context, const ::pb::Request* request, ::grpc::ClientReadReactor< ::pb::Net>* reactor) override;
+      void GetProcs(::grpc::ClientContext* context, const ::pb::Request* request, ::grpc::ClientReadReactor< ::pb::Proc>* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -81,9 +147,20 @@ class Monitor final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::pb::Reponse>* AsyncGetMonitorRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::pb::Reponse>* PrepareAsyncGetMonitorRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) override;
-    const ::grpc::internal::RpcMethod rpcmethod_GetMonitor_;
+    ::grpc::ClientAsyncResponseReader< ::pb::Cpu>* AsyncGetCpuRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::Cpu>* PrepareAsyncGetCpuRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::Mem>* AsyncGetMemRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::pb::Mem>* PrepareAsyncGetMemRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::pb::Net>* GetNetsRaw(::grpc::ClientContext* context, const ::pb::Request& request) override;
+    ::grpc::ClientAsyncReader< ::pb::Net>* AsyncGetNetsRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::pb::Net>* PrepareAsyncGetNetsRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::pb::Proc>* GetProcsRaw(::grpc::ClientContext* context, const ::pb::Request& request) override;
+    ::grpc::ClientAsyncReader< ::pb::Proc>* AsyncGetProcsRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::pb::Proc>* PrepareAsyncGetProcsRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_GetCpu_;
+    const ::grpc::internal::RpcMethod rpcmethod_GetMem_;
+    const ::grpc::internal::RpcMethod rpcmethod_GetNets_;
+    const ::grpc::internal::RpcMethod rpcmethod_GetProcs_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -91,147 +168,539 @@ class Monitor final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status GetMonitor(::grpc::ServerContext* context, const ::pb::Request* request, ::pb::Reponse* response);
+    virtual ::grpc::Status GetCpu(::grpc::ServerContext* context, const ::pb::Request* request, ::pb::Cpu* response);
+    virtual ::grpc::Status GetMem(::grpc::ServerContext* context, const ::pb::Request* request, ::pb::Mem* response);
+    virtual ::grpc::Status GetNets(::grpc::ServerContext* context, const ::pb::Request* request, ::grpc::ServerWriter< ::pb::Net>* writer);
+    virtual ::grpc::Status GetProcs(::grpc::ServerContext* context, const ::pb::Request* request, ::grpc::ServerWriter< ::pb::Proc>* writer);
   };
   template <class BaseClass>
-  class WithAsyncMethod_GetMonitor : public BaseClass {
+  class WithAsyncMethod_GetCpu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_GetMonitor() {
+    WithAsyncMethod_GetCpu() {
       ::grpc::Service::MarkMethodAsync(0);
     }
-    ~WithAsyncMethod_GetMonitor() override {
+    ~WithAsyncMethod_GetCpu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetMonitor(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Reponse* /*response*/) override {
+    ::grpc::Status GetCpu(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Cpu* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetMonitor(::grpc::ServerContext* context, ::pb::Request* request, ::grpc::ServerAsyncResponseWriter< ::pb::Reponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestGetCpu(::grpc::ServerContext* context, ::pb::Request* request, ::grpc::ServerAsyncResponseWriter< ::pb::Cpu>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetMonitor<Service > AsyncService;
   template <class BaseClass>
-  class WithCallbackMethod_GetMonitor : public BaseClass {
+  class WithAsyncMethod_GetMem : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_GetMonitor() {
+    WithAsyncMethod_GetMem() {
+      ::grpc::Service::MarkMethodAsync(1);
+    }
+    ~WithAsyncMethod_GetMem() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetMem(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Mem* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetMem(::grpc::ServerContext* context, ::pb::Request* request, ::grpc::ServerAsyncResponseWriter< ::pb::Mem>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_GetNets : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_GetNets() {
+      ::grpc::Service::MarkMethodAsync(2);
+    }
+    ~WithAsyncMethod_GetNets() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetNets(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::grpc::ServerWriter< ::pb::Net>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetNets(::grpc::ServerContext* context, ::pb::Request* request, ::grpc::ServerAsyncWriter< ::pb::Net>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(2, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithAsyncMethod_GetProcs : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_GetProcs() {
+      ::grpc::Service::MarkMethodAsync(3);
+    }
+    ~WithAsyncMethod_GetProcs() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetProcs(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::grpc::ServerWriter< ::pb::Proc>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetProcs(::grpc::ServerContext* context, ::pb::Request* request, ::grpc::ServerAsyncWriter< ::pb::Proc>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(3, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_GetCpu<WithAsyncMethod_GetMem<WithAsyncMethod_GetNets<WithAsyncMethod_GetProcs<Service > > > > AsyncService;
+  template <class BaseClass>
+  class WithCallbackMethod_GetCpu : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_GetCpu() {
       ::grpc::Service::MarkMethodCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::pb::Request, ::pb::Reponse>(
+          new ::grpc::internal::CallbackUnaryHandler< ::pb::Request, ::pb::Cpu>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::pb::Request* request, ::pb::Reponse* response) { return this->GetMonitor(context, request, response); }));}
-    void SetMessageAllocatorFor_GetMonitor(
-        ::grpc::MessageAllocator< ::pb::Request, ::pb::Reponse>* allocator) {
+                   ::grpc::CallbackServerContext* context, const ::pb::Request* request, ::pb::Cpu* response) { return this->GetCpu(context, request, response); }));}
+    void SetMessageAllocatorFor_GetCpu(
+        ::grpc::MessageAllocator< ::pb::Request, ::pb::Cpu>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
-      static_cast<::grpc::internal::CallbackUnaryHandler< ::pb::Request, ::pb::Reponse>*>(handler)
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::pb::Request, ::pb::Cpu>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_GetMonitor() override {
+    ~WithCallbackMethod_GetCpu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetMonitor(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Reponse* /*response*/) override {
+    ::grpc::Status GetCpu(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Cpu* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* GetMonitor(
-      ::grpc::CallbackServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Reponse* /*response*/)  { return nullptr; }
+    virtual ::grpc::ServerUnaryReactor* GetCpu(
+      ::grpc::CallbackServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Cpu* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_GetMonitor<Service > CallbackService;
+  template <class BaseClass>
+  class WithCallbackMethod_GetMem : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_GetMem() {
+      ::grpc::Service::MarkMethodCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::pb::Request, ::pb::Mem>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::pb::Request* request, ::pb::Mem* response) { return this->GetMem(context, request, response); }));}
+    void SetMessageAllocatorFor_GetMem(
+        ::grpc::MessageAllocator< ::pb::Request, ::pb::Mem>* allocator) {
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
+      static_cast<::grpc::internal::CallbackUnaryHandler< ::pb::Request, ::pb::Mem>*>(handler)
+              ->SetMessageAllocator(allocator);
+    }
+    ~WithCallbackMethod_GetMem() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetMem(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Mem* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* GetMem(
+      ::grpc::CallbackServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Mem* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_GetNets : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_GetNets() {
+      ::grpc::Service::MarkMethodCallback(2,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::pb::Request, ::pb::Net>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::pb::Request* request) { return this->GetNets(context, request); }));
+    }
+    ~WithCallbackMethod_GetNets() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetNets(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::grpc::ServerWriter< ::pb::Net>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::pb::Net>* GetNets(
+      ::grpc::CallbackServerContext* /*context*/, const ::pb::Request* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithCallbackMethod_GetProcs : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_GetProcs() {
+      ::grpc::Service::MarkMethodCallback(3,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::pb::Request, ::pb::Proc>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::pb::Request* request) { return this->GetProcs(context, request); }));
+    }
+    ~WithCallbackMethod_GetProcs() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetProcs(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::grpc::ServerWriter< ::pb::Proc>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::pb::Proc>* GetProcs(
+      ::grpc::CallbackServerContext* /*context*/, const ::pb::Request* /*request*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_GetCpu<WithCallbackMethod_GetMem<WithCallbackMethod_GetNets<WithCallbackMethod_GetProcs<Service > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
-  class WithGenericMethod_GetMonitor : public BaseClass {
+  class WithGenericMethod_GetCpu : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_GetMonitor() {
+    WithGenericMethod_GetCpu() {
       ::grpc::Service::MarkMethodGeneric(0);
     }
-    ~WithGenericMethod_GetMonitor() override {
+    ~WithGenericMethod_GetCpu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetMonitor(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Reponse* /*response*/) override {
+    ::grpc::Status GetCpu(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Cpu* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithRawMethod_GetMonitor : public BaseClass {
+  class WithGenericMethod_GetMem : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_GetMonitor() {
-      ::grpc::Service::MarkMethodRaw(0);
+    WithGenericMethod_GetMem() {
+      ::grpc::Service::MarkMethodGeneric(1);
     }
-    ~WithRawMethod_GetMonitor() override {
+    ~WithGenericMethod_GetMem() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetMonitor(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Reponse* /*response*/) override {
+    ::grpc::Status GetMem(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Mem* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetMonitor(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetNets : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_GetNets() {
+      ::grpc::Service::MarkMethodGeneric(2);
+    }
+    ~WithGenericMethod_GetNets() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetNets(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::grpc::ServerWriter< ::pb::Net>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_GetProcs : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_GetProcs() {
+      ::grpc::Service::MarkMethodGeneric(3);
+    }
+    ~WithGenericMethod_GetProcs() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetProcs(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::grpc::ServerWriter< ::pb::Proc>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_GetCpu : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_GetCpu() {
+      ::grpc::Service::MarkMethodRaw(0);
+    }
+    ~WithRawMethod_GetCpu() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetCpu(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Cpu* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetCpu(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_GetMonitor : public BaseClass {
+  class WithRawMethod_GetMem : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_GetMonitor() {
+    WithRawMethod_GetMem() {
+      ::grpc::Service::MarkMethodRaw(1);
+    }
+    ~WithRawMethod_GetMem() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetMem(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Mem* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetMem(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_GetNets : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_GetNets() {
+      ::grpc::Service::MarkMethodRaw(2);
+    }
+    ~WithRawMethod_GetNets() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetNets(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::grpc::ServerWriter< ::pb::Net>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetNets(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(2, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_GetProcs : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_GetProcs() {
+      ::grpc::Service::MarkMethodRaw(3);
+    }
+    ~WithRawMethod_GetProcs() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetProcs(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::grpc::ServerWriter< ::pb::Proc>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetProcs(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(3, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_GetCpu : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_GetCpu() {
       ::grpc::Service::MarkMethodRawCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetMonitor(context, request, response); }));
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetCpu(context, request, response); }));
     }
-    ~WithRawCallbackMethod_GetMonitor() override {
+    ~WithRawCallbackMethod_GetCpu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetMonitor(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Reponse* /*response*/) override {
+    ::grpc::Status GetCpu(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Cpu* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* GetMonitor(
+    virtual ::grpc::ServerUnaryReactor* GetCpu(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_GetMonitor : public BaseClass {
+  class WithRawCallbackMethod_GetMem : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_GetMonitor() {
+    WithRawCallbackMethod_GetMem() {
+      ::grpc::Service::MarkMethodRawCallback(1,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetMem(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_GetMem() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetMem(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Mem* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* GetMem(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_GetNets : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_GetNets() {
+      ::grpc::Service::MarkMethodRawCallback(2,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->GetNets(context, request); }));
+    }
+    ~WithRawCallbackMethod_GetNets() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetNets(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::grpc::ServerWriter< ::pb::Net>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* GetNets(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_GetProcs : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_GetProcs() {
+      ::grpc::Service::MarkMethodRawCallback(3,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->GetProcs(context, request); }));
+    }
+    ~WithRawCallbackMethod_GetProcs() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetProcs(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::grpc::ServerWriter< ::pb::Proc>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* GetProcs(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetCpu : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_GetCpu() {
       ::grpc::Service::MarkMethodStreamed(0,
         new ::grpc::internal::StreamedUnaryHandler<
-          ::pb::Request, ::pb::Reponse>(
+          ::pb::Request, ::pb::Cpu>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
-                     ::pb::Request, ::pb::Reponse>* streamer) {
-                       return this->StreamedGetMonitor(context,
+                     ::pb::Request, ::pb::Cpu>* streamer) {
+                       return this->StreamedGetCpu(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_GetMonitor() override {
+    ~WithStreamedUnaryMethod_GetCpu() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetMonitor(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Reponse* /*response*/) override {
+    ::grpc::Status GetCpu(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Cpu* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetMonitor(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::Request,::pb::Reponse>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedGetCpu(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::Request,::pb::Cpu>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetMonitor<Service > StreamedUnaryService;
-  typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetMonitor<Service > StreamedService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetMem : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_GetMem() {
+      ::grpc::Service::MarkMethodStreamed(1,
+        new ::grpc::internal::StreamedUnaryHandler<
+          ::pb::Request, ::pb::Mem>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerUnaryStreamer<
+                     ::pb::Request, ::pb::Mem>* streamer) {
+                       return this->StreamedGetMem(context,
+                         streamer);
+                  }));
+    }
+    ~WithStreamedUnaryMethod_GetMem() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetMem(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::pb::Mem* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedGetMem(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::pb::Request,::pb::Mem>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_GetCpu<WithStreamedUnaryMethod_GetMem<Service > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithSplitStreamingMethod_GetNets : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_GetNets() {
+      ::grpc::Service::MarkMethodStreamed(2,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::pb::Request, ::pb::Net>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::pb::Request, ::pb::Net>* streamer) {
+                       return this->StreamedGetNets(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_GetNets() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetNets(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::grpc::ServerWriter< ::pb::Net>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedGetNets(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::pb::Request,::pb::Net>* server_split_streamer) = 0;
+  };
+  template <class BaseClass>
+  class WithSplitStreamingMethod_GetProcs : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_GetProcs() {
+      ::grpc::Service::MarkMethodStreamed(3,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::pb::Request, ::pb::Proc>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::pb::Request, ::pb::Proc>* streamer) {
+                       return this->StreamedGetProcs(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_GetProcs() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status GetProcs(::grpc::ServerContext* /*context*/, const ::pb::Request* /*request*/, ::grpc::ServerWriter< ::pb::Proc>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedGetProcs(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::pb::Request,::pb::Proc>* server_split_streamer) = 0;
+  };
+  typedef WithSplitStreamingMethod_GetNets<WithSplitStreamingMethod_GetProcs<Service > > SplitStreamedService;
+  typedef WithStreamedUnaryMethod_GetCpu<WithStreamedUnaryMethod_GetMem<WithSplitStreamingMethod_GetNets<WithSplitStreamingMethod_GetProcs<Service > > > > StreamedService;
 };
 
 }  // namespace pb

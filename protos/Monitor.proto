@@ -3,18 +3,14 @@ syntax = "proto3";
 package pb;
 
 service Monitor {
-  rpc GetMonitor(Request) returns (Reponse);
+  rpc GetCpu(Request) returns (Cpu);
+  rpc GetMem(Request) returns (Mem);
+  rpc GetNets(Request) returns (stream Net);
+  rpc GetProcs(Request) returns (stream Proc);
 }
 
 message Request {
   
-}
-
-message Reponse {
-  Cpu cpu = 1;
-  Mem mem = 2;
-  repeated Net net = 3;
-  repeated Proc proc = 4;
 }
 
 message Cpu {

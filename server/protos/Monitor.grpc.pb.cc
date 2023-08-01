@@ -22,7 +22,10 @@
 namespace pb {
 
 static const char* Monitor_method_names[] = {
-  "/pb.Monitor/GetMonitor",
+  "/pb.Monitor/GetCpu",
+  "/pb.Monitor/GetMem",
+  "/pb.Monitor/GetNets",
+  "/pb.Monitor/GetProcs",
 };
 
 std::unique_ptr< Monitor::Stub> Monitor::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -32,52 +35,161 @@ std::unique_ptr< Monitor::Stub> Monitor::NewStub(const std::shared_ptr< ::grpc::
 }
 
 Monitor::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
-  : channel_(channel), rpcmethod_GetMonitor_(Monitor_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  : channel_(channel), rpcmethod_GetCpu_(Monitor_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetMem_(Monitor_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_GetNets_(Monitor_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_GetProcs_(Monitor_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   {}
 
-::grpc::Status Monitor::Stub::GetMonitor(::grpc::ClientContext* context, const ::pb::Request& request, ::pb::Reponse* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::pb::Request, ::pb::Reponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetMonitor_, context, request, response);
+::grpc::Status Monitor::Stub::GetCpu(::grpc::ClientContext* context, const ::pb::Request& request, ::pb::Cpu* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::pb::Request, ::pb::Cpu, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetCpu_, context, request, response);
 }
 
-void Monitor::Stub::async::GetMonitor(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Reponse* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::pb::Request, ::pb::Reponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetMonitor_, context, request, response, std::move(f));
+void Monitor::Stub::async::GetCpu(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Cpu* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::pb::Request, ::pb::Cpu, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetCpu_, context, request, response, std::move(f));
 }
 
-void Monitor::Stub::async::GetMonitor(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Reponse* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetMonitor_, context, request, response, reactor);
+void Monitor::Stub::async::GetCpu(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Cpu* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetCpu_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::pb::Reponse>* Monitor::Stub::PrepareAsyncGetMonitorRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::pb::Reponse, ::pb::Request, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetMonitor_, context, request);
+::grpc::ClientAsyncResponseReader< ::pb::Cpu>* Monitor::Stub::PrepareAsyncGetCpuRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::pb::Cpu, ::pb::Request, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetCpu_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::pb::Reponse>* Monitor::Stub::AsyncGetMonitorRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::pb::Cpu>* Monitor::Stub::AsyncGetCpuRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsyncGetMonitorRaw(context, request, cq);
+    this->PrepareAsyncGetCpuRaw(context, request, cq);
   result->StartCall();
   return result;
+}
+
+::grpc::Status Monitor::Stub::GetMem(::grpc::ClientContext* context, const ::pb::Request& request, ::pb::Mem* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::pb::Request, ::pb::Mem, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetMem_, context, request, response);
+}
+
+void Monitor::Stub::async::GetMem(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Mem* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::pb::Request, ::pb::Mem, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetMem_, context, request, response, std::move(f));
+}
+
+void Monitor::Stub::async::GetMem(::grpc::ClientContext* context, const ::pb::Request* request, ::pb::Mem* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetMem_, context, request, response, reactor);
+}
+
+::grpc::ClientAsyncResponseReader< ::pb::Mem>* Monitor::Stub::PrepareAsyncGetMemRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::pb::Mem, ::pb::Request, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetMem_, context, request);
+}
+
+::grpc::ClientAsyncResponseReader< ::pb::Mem>* Monitor::Stub::AsyncGetMemRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+  auto* result =
+    this->PrepareAsyncGetMemRaw(context, request, cq);
+  result->StartCall();
+  return result;
+}
+
+::grpc::ClientReader< ::pb::Net>* Monitor::Stub::GetNetsRaw(::grpc::ClientContext* context, const ::pb::Request& request) {
+  return ::grpc::internal::ClientReaderFactory< ::pb::Net>::Create(channel_.get(), rpcmethod_GetNets_, context, request);
+}
+
+void Monitor::Stub::async::GetNets(::grpc::ClientContext* context, const ::pb::Request* request, ::grpc::ClientReadReactor< ::pb::Net>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::pb::Net>::Create(stub_->channel_.get(), stub_->rpcmethod_GetNets_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::pb::Net>* Monitor::Stub::AsyncGetNetsRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::pb::Net>::Create(channel_.get(), cq, rpcmethod_GetNets_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::pb::Net>* Monitor::Stub::PrepareAsyncGetNetsRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::pb::Net>::Create(channel_.get(), cq, rpcmethod_GetNets_, context, request, false, nullptr);
+}
+
+::grpc::ClientReader< ::pb::Proc>* Monitor::Stub::GetProcsRaw(::grpc::ClientContext* context, const ::pb::Request& request) {
+  return ::grpc::internal::ClientReaderFactory< ::pb::Proc>::Create(channel_.get(), rpcmethod_GetProcs_, context, request);
+}
+
+void Monitor::Stub::async::GetProcs(::grpc::ClientContext* context, const ::pb::Request* request, ::grpc::ClientReadReactor< ::pb::Proc>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::pb::Proc>::Create(stub_->channel_.get(), stub_->rpcmethod_GetProcs_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::pb::Proc>* Monitor::Stub::AsyncGetProcsRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::pb::Proc>::Create(channel_.get(), cq, rpcmethod_GetProcs_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::pb::Proc>* Monitor::Stub::PrepareAsyncGetProcsRaw(::grpc::ClientContext* context, const ::pb::Request& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::pb::Proc>::Create(channel_.get(), cq, rpcmethod_GetProcs_, context, request, false, nullptr);
 }
 
 Monitor::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       Monitor_method_names[0],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
-      new ::grpc::internal::RpcMethodHandler< Monitor::Service, ::pb::Request, ::pb::Reponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+      new ::grpc::internal::RpcMethodHandler< Monitor::Service, ::pb::Request, ::pb::Cpu, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](Monitor::Service* service,
              ::grpc::ServerContext* ctx,
              const ::pb::Request* req,
-             ::pb::Reponse* resp) {
-               return service->GetMonitor(ctx, req, resp);
+             ::pb::Cpu* resp) {
+               return service->GetCpu(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      Monitor_method_names[1],
+      ::grpc::internal::RpcMethod::NORMAL_RPC,
+      new ::grpc::internal::RpcMethodHandler< Monitor::Service, ::pb::Request, ::pb::Mem, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
+          [](Monitor::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::pb::Request* req,
+             ::pb::Mem* resp) {
+               return service->GetMem(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      Monitor_method_names[2],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< Monitor::Service, ::pb::Request, ::pb::Net>(
+          [](Monitor::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::pb::Request* req,
+             ::grpc::ServerWriter<::pb::Net>* writer) {
+               return service->GetNets(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      Monitor_method_names[3],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< Monitor::Service, ::pb::Request, ::pb::Proc>(
+          [](Monitor::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::pb::Request* req,
+             ::grpc::ServerWriter<::pb::Proc>* writer) {
+               return service->GetProcs(ctx, req, writer);
              }, this)));
 }
 
 Monitor::Service::~Service() {
 }
 
-::grpc::Status Monitor::Service::GetMonitor(::grpc::ServerContext* context, const ::pb::Request* request, ::pb::Reponse* response) {
+::grpc::Status Monitor::Service::GetCpu(::grpc::ServerContext* context, const ::pb::Request* request, ::pb::Cpu* response) {
   (void) context;
   (void) request;
   (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Monitor::Service::GetMem(::grpc::ServerContext* context, const ::pb::Request* request, ::pb::Mem* response) {
+  (void) context;
+  (void) request;
+  (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Monitor::Service::GetNets(::grpc::ServerContext* context, const ::pb::Request* request, ::grpc::ServerWriter< ::pb::Net>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Monitor::Service::GetProcs(::grpc::ServerContext* context, const ::pb::Request* request, ::grpc::ServerWriter< ::pb::Proc>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
