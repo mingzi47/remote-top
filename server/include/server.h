@@ -2,6 +2,7 @@
 
 #include <Monitor.grpc.pb.h>
 #include <Monitor.pb.h>
+#include <grpcpp/completion_queue.h>
 #include <grpcpp/server_context.h>
 #include <grpcpp/support/status.h>
 #include <grpcpp/server_builder.h>

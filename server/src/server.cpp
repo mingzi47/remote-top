@@ -1,4 +1,5 @@
 #include <server.h>
+#include <grpcpp/completion_queue.h>
 
 namespace server {
 
@@ -48,4 +49,71 @@ static auto get_proc_class(proc::proc_info &proc) -> pb::Proc {
   return res;
 }
 
+auto MonitorImpl::GetCpu(grpc::ServerContext *context, const pb::Request *request,
+                  pb::Cpu *rep) -> grpc::Status {
+
+cpu::cpu_info tmp;
+{
+  std::shared_lock RLock(RWLock);
+  tmp = monitor_value.cpus;
+}
+*rep = get_cpu_class(tmp);
+  return grpc::Status::OK;
+
+}
+
+  auto MonitorImpl::GetMem(grpc::ServerContext *context, const pb::Request *request,
+                  pb::Mem *rep) -> grpc::Status {
+                    mem::mem_info tmp;
+                    {
+                      std::shared_lock RLock(RWLock);
+                      tmp = monitor_value.mem;
+                    }
+                    *rep = get_mem_class(tmp);
+                    return grpc::Status::OK;
+
+}
+
+  auto MonitorImpl::GetNets(grpc::ServerContext *context, const pb::Request *request,
+                  grpc::ServerWriter<pb::Net> *writer)-> grpc::Status {
+                    std::vector<net::net_info> tmp;
+                    {
+                      std::shared_lock RLock(RWLock);
+                      tmp = monitor_value.nets;
+                    }
+                    for (auto &net : tmp) {
+                      writer->Write(get_net_class(net));
+                    }
+                    return grpc::Status::OK;
+
+}
+
+  auto MonitorImpl::GetProcs(grpc::ServerContext *context, const pb::Request *request,
+                  grpc::ServerWriter<pb::Proc> *writer) -> grpc::Status {
+                    std::vector<proc::proc_info> tmp;
+                    {
+                      std::shared_lock RLock(RWLock);
+                      tmp = monitor_value.procs;
+                    }
+                    for (auto &proc : tmp) {
+                      writer->Write(get_proc_class(proc));
+                    }
+                    return grpc::Status::OK;
+
+}
+auto Server::Run() -> void {
+  std::string server_address = "0.0.0.0:50051";
+
+  MonitorImpl service;
+
+  grpc::ServerBuilder builder;
+
+  // 不使用安全认证
+  builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
+  builder.RegisterService(&service);
+  std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
+
+  std::cout << "Server listening on " << server_address << "\n";
+  server->Wait();
+}
 } // namespace server
