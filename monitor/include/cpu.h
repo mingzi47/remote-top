@@ -35,23 +35,23 @@ using u64 = uint64_t;
 extern std::vector<u64> old_totals;
 
 struct cpu_info {
-  std::string cpu_name{};
-  u64 core_num{0};
-  double cpu_hz{0};
-  std::vector<double> cpu_s{};
+    std::string cpu_name{};
+    u64 core_num{0};
+    double cpu_hz{0};
+    std::vector<double> cpu_s{};
 
-  cpu_info() = default;
+    cpu_info() = default;
 
-  cpu_info(const cpu_info& rvalue);
-  auto operator=(const cpu_info& rvalue) -> void;
+    cpu_info(const cpu_info &rvalue);
+    auto operator=(const cpu_info &rvalue) -> void;
 
-  cpu_info(cpu_info&& rvalue) noexcept;
-  auto operator=(cpu_info&& rvalue) noexcept -> void;
+    cpu_info(cpu_info &&rvalue) noexcept;
+    auto operator=(cpu_info &&rvalue) noexcept -> void;
 
-  auto swap(cpu_info &rvalue) noexcept -> void;
+    auto swap(cpu_info &rvalue) noexcept -> void;
 
-  auto clear() -> void;
+    auto clear() -> void;
 };
 
-auto get_cpu_info() -> cpu_info&;
+auto get_cpu_info() -> cpu_info &;
 } // namespace cpu
