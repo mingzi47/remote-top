@@ -1,13 +1,13 @@
 <template>
-<table class="layout">
+  <table class="layout">
     <tr>
       <td colspan="2">
-      <div><CpuPane/></div>
+        <div><CpuPane /></div>
       </td>
     </tr>
     <tr>
       <td>
-      <div><MemPane /></div> 
+        <div><MemPane /></div>
       </td>
       <td rowspan="2">
         <div><ProcPane /></div>
@@ -15,10 +15,10 @@
     </tr>
     <tr>
       <td>
-      <div><NetPane /></div>
+        <div><NetPane /></div>
       </td>
     </tr>
-</table>
+  </table>
 </template>
 
 <script>
@@ -35,8 +35,8 @@ export default {
     CpuPane,
     ProcPane,
     NetPane,
-    MemPane
-},
+    MemPane,
+  },
   setup() {
     const percentage = ref(8);
 
@@ -50,15 +50,15 @@ export default {
       return "#FF0000";
     };
 
-    const eTabs = inject("Main_editableTabs")
-    const eTabsValue = inject("Main_editableTabsValue")
+    const eTabs = inject("Main_editableTabs");
+    const eTabsValue = inject("Main_editableTabsValue");
     const ip = () => {
-        for (let tab of eTabs.value) {
-          if (tab.name == eTabsValue.value) {
-            return tab.title;
-          }
+      for (let tab of eTabs.value) {
+        if (tab.name == eTabsValue.value) {
+          return tab.title;
         }
-        return "NewTab"
+      }
+      return "NewTab";
     };
 
     const monitorInfo = ref({});
@@ -67,26 +67,28 @@ export default {
       if (ip().trim() == "New Tab") {
         return;
       }
-      Collect(ip().trim(), 50051).then(result => {
-        monitorInfo.value = result
-      }).catch(error => {
-        alert(error);
-      })
-    },2000)
+      Collect(ip().trim(), 50051)
+        .then((result) => {
+          monitorInfo.value = result;
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    }, 2000);
 
     provide("MonitorInfo", monitorInfo);
 
-    onUnmounted(() =>  {
+    onUnmounted(() => {
       clearInterval(mainTimer);
-    })
+    });
 
     return {
       percentage,
       customColorMethod,
       monitorInfo,
-    }
-  }
-}
+    };
+  },
+};
 </script>
 
 <style>
@@ -106,7 +108,5 @@ export default {
 }
 
 .layout {
-  
 }
-
 </style>

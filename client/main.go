@@ -19,12 +19,12 @@ func main() {
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "remote-top",
-		Width:  1536,
-		Height: 1100,
+		Width:  1324,
+		Height: 868,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		BackgroundColour: &options.RGBA{R: 30, G: 30, B: 30, A: 1},
+		BackgroundColour: &options.RGBA{R: 255, G: 255, B: 255, A: 1},
 		OnStartup:        app.startup,
 		Bind: []interface{}{
 			app,

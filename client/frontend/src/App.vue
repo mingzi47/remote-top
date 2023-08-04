@@ -1,19 +1,18 @@
 <template>
-  <MainPane/>
+  <MainPane />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
-import MainPane from './components/MainPane.vue'
-import {WindowSetSize} from '../wailsjs/runtime/runtime';
+import HelloWorld from "./components/HelloWorld.vue";
+import MainPane from "./components/MainPane.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     MainPane,
-    HelloWorld
+    HelloWorld,
   },
-}
+};
 </script>
 
 <style>
