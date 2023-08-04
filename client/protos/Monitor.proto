@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "./pb";
+
+service Monitor {
+  rpc GetCpu(Request) returns (Cpu);
+  rpc GetMem(Request) returns (Mem);
+  rpc GetNets(Request) returns (stream Net);
+  rpc GetProcs(Request) returns (stream Proc);
+}
+
+message Request {
+  
+}
+
+message Cpu {
+  string name = 1;
+  int64 core_num = 2;
+  float cpu_hz = 3;
+  repeated float cpu_s = 4;
+}
+
+message Mem {
+  int64 total = 1;
+  int64 free = 2;
+  int64 available = 3;
+  int64 cached = 4;
+  int64 swap_total = 5;
+  int64 swap_free = 6;
+}
+
+message Net {
+  string name = 1;
+  int64 upload = 2;
+  int64 upload_s = 3;
+  int64 download = 4;
+  int64 download_s = 5;
+}
+
+message Proc {
+  string name = 1;
+  string usr = 2;
+  string state = 3;
+  int64 pid = 4;
+  int64 mem = 5;
+  int64 thread_num = 6;
+  float cpu_s = 7;
+}
