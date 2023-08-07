@@ -6,7 +6,7 @@ Remote Linux Monitoring with [gRPC](https://grpc.io/docs/languages/cpp/quickstar
 
 ## Why
 
-Trying to use gRPC and write GUI.
+ 
 
 ## Features
 
