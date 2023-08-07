@@ -43,10 +43,10 @@ struct cpu_info {
     cpu_info() = default;
 
     cpu_info(const cpu_info &rvalue);
-    auto operator=(const cpu_info &rvalue) -> void;
+    auto operator=(const cpu_info &rvalue) -> cpu_info&;
 
     cpu_info(cpu_info &&rvalue) noexcept;
-    auto operator=(cpu_info &&rvalue) noexcept -> void;
+    auto operator=(cpu_info &&rvalue) noexcept -> cpu_info&;
 
     auto swap(cpu_info &rvalue) noexcept -> void;
 

@@ -24,10 +24,10 @@ struct net_info {
     net_info() = default;
 
     net_info(const net_info &rvalue);
-    auto operator=(const net_info &rvalue) -> void;
+    auto operator=(const net_info &rvalue) -> net_info &;
 
     net_info(net_info &&rvalue) noexcept;
-    auto operator=(net_info &&rvalue) noexcept -> void;
+    auto operator=(net_info &&rvalue) noexcept -> net_info &;
 
     auto swap(net_info &rvalue) noexcept -> void;
 };

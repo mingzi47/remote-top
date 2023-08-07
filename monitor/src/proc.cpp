@@ -146,7 +146,7 @@ auto get_proc_info(u64 core_num) -> std::vector<proc_info> && {
 
 proc_info::proc_info(const proc_info &rvalue) { this->operator=(rvalue); }
 
-auto proc_info::operator=(const proc_info &rvalue) -> void {
+auto proc_info::operator=(const proc_info &rvalue) -> proc_info& {
   this->proc_pid = rvalue.proc_pid;
   this->proc_mem = rvalue.proc_mem;
   this->proc_thread_num = rvalue.proc_thread_num;
@@ -154,12 +154,14 @@ auto proc_info::operator=(const proc_info &rvalue) -> void {
   this->proc_name = rvalue.proc_name;
   this->proc_usr = rvalue.proc_usr;
   this->proc_state = rvalue.proc_state;
+  return *this;
 }
 
 proc_info::proc_info(proc_info &&rvalue) noexcept { this->swap(rvalue); };
 
-auto proc_info::operator=(proc_info &&rvalue) noexcept -> void {
+auto proc_info::operator=(proc_info &&rvalue) noexcept -> proc_info& {
   this->swap(rvalue);
+  return *this;
 }
 
 auto proc_info::swap(proc_info &rvalue) noexcept -> void {
