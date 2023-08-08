@@ -9,7 +9,7 @@ auto get_mem_info() -> mem_info  {
   if (fread.is_open())
     fread.close();
 
-  fread.open("/proc/meminfo", std::ios_base::in);
+  fread.open(global::g_path / "proc/meminfo", std::ios_base::in);
 
   std::string str{};
   while (fread.good()) {

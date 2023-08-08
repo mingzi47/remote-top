@@ -7,7 +7,6 @@ namespace monitor {
 monitor_info monitor_value{};
 
 auto get_monitor_info() -> monitor_info& {
-
   monitor_value.cpus = std::move(cpu::get_cpu_info());
   monitor_value.mem = mem::get_mem_info();
   monitor_value.nets = std::move(net::get_net_info());

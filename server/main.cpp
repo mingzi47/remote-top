@@ -2,10 +2,12 @@
 #include <iostream>
 #include <server.h>
 #include <thread>
+#include <global.h>
 
 using namespace std::chrono_literals;
 
-auto main() -> int {
+auto main(int argc, char *argv[]) -> int {
+    if (argc >= 2) { global::g_path = argv[1]; }
     // 每一秒收集一次信息
     std::thread collect([&]() {
         while (true) {

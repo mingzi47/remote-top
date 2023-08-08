@@ -14,7 +14,7 @@ auto get_net_info() -> std::vector<net_info> & {
     std::unordered_map<std::string, std::pair<u64, u64>> tmp_nets{};
     if (fread.is_open()) fread.close();
 
-    fread.open("/proc/net/dev", std::ios_base::in);
+    fread.open(global::g_path / "proc/net/dev", std::ios_base::in);
 
     std::string str{};
     int skip = 0;

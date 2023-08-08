@@ -23,7 +23,7 @@ auto get_cpu_info() -> cpu_info & {
     if (cpu.cpu_name == "") {
         // 获得 cpu 名字，核心数，Hz
         if (cread.is_open()) cread.close();
-        cread.open("/proc/cpuinfo", std::ios_base::in);
+        cread.open(global::g_path / "proc/cpuinfo", std::ios_base::in);
         if (not cread.good()) { throw std::exception(); }
         std::string str{};
         bool flag0{true}, flag1{true};
@@ -45,7 +45,7 @@ auto get_cpu_info() -> cpu_info & {
     }
 
     if (cread.is_open()) cread.close();
-    cread.open("/proc/stat");
+    cread.open(global::g_path / "proc/stat");
 
     if (not cread.good()) { throw std::exception(); }
 
