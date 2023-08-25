@@ -34,7 +34,6 @@ namespace cpu {
 
 using u64 = uint64_t;
 
-
 inline std::vector<u64> old_totals;
 
 struct cpu_info {
@@ -46,10 +45,10 @@ struct cpu_info {
     cpu_info() = default;
 
     cpu_info(const cpu_info &rvalue);
-    auto operator=(const cpu_info &rvalue) -> cpu_info&;
+    auto operator=(const cpu_info &rvalue) -> cpu_info &;
 
     cpu_info(cpu_info &&rvalue) noexcept;
-    auto operator=(cpu_info &&rvalue) noexcept -> cpu_info&;
+    auto operator=(cpu_info &&rvalue) noexcept -> cpu_info &;
 
     auto swap(cpu_info &rvalue) noexcept -> void;
 

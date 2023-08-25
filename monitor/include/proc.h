@@ -32,10 +32,10 @@ struct proc_info {
     proc_info() = default;
 
     proc_info(const proc_info &rvalue);
-    auto operator=(const proc_info &rvalue) -> proc_info&;
+    auto operator=(const proc_info &rvalue) -> proc_info &;
 
     proc_info(proc_info &&rvalue) noexcept;
-    auto operator=(proc_info &&rvalue) noexcept -> proc_info&;
+    auto operator=(proc_info &&rvalue) noexcept -> proc_info &;
 
     auto swap(proc_info &rvalue) noexcept -> void;
 };

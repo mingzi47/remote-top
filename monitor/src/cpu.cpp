@@ -23,8 +23,8 @@ auto get_cpu_info() -> cpu_info & {
         if (cpu_file.is_open()) cpu_file.close();
         cpu_file.open(global::g_path / "proc/cpuinfo", std::ios_base::in);
         if (not cpu_file.good()) {
-          minilog::error("failed open proc/cpuinfo");
-          exit(1);
+            minilog::error("failed open proc/cpuinfo");
+            exit(1);
         }
         std::string str{};
         bool flag0{true}, flag1{true};

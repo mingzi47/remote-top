@@ -4,4 +4,4 @@ namespace global {
 
 std::filesystem::path g_path("/");
 
-} // global
+} // namespace global
