@@ -47,3 +47,7 @@ else
   echo "not found command, ./build help";
 fi
 
+function build_docker() {
+  docker build -t remote-top .
+  docker run --rm -ti  -v  /proc:/hostinfo/proc -v  /etc/passwd:/hostinfo/etc/passwd  -p 50051:50051 remote-top
+}
