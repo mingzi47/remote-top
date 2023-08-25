@@ -3,17 +3,17 @@
 namespace mem {
 mem_info mem{};
 
-static std::ifstream fread;
+std::ifstream mem_file;
 
 auto get_mem_info() -> mem_info  {
-  if (fread.is_open())
-    fread.close();
+  if (mem_file.is_open())
+    mem_file.close();
 
-  fread.open(global::g_path / "proc/meminfo", std::ios_base::in);
+  mem_file.open(global::g_path / "proc/meminfo", std::ios_base::in);
 
   std::string str{};
-  while (fread.good()) {
-    std::getline(fread, str);
+  while (mem_file.good()) {
+    std::getline(mem_file, str);
     if (str.starts_with("MemTotal")) {
       str.erase(0, str.find(":") + 1);
       mem.mem_total = std::stoull(str);
@@ -39,7 +39,7 @@ auto get_mem_info() -> mem_info  {
     }
   }
 
-  fread.close();
+  mem_file.close();
 
   return mem;
 }

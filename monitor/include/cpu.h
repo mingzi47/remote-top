@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <global.h>
+#include <minilog.h>
 
 /*
   files
@@ -33,7 +34,8 @@ namespace cpu {
 
 using u64 = uint64_t;
 
-extern std::vector<u64> old_totals;
+
+inline std::vector<u64> old_totals;
 
 struct cpu_info {
     std::string cpu_name{};

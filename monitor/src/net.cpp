@@ -2,7 +2,7 @@
 
 namespace net {
 
-std::ifstream fread{};
+std::ifstream net_file{};
 
 std::vector<net_info> nets{};
 
@@ -12,14 +12,14 @@ net_info new_net{};
 
 auto get_net_info() -> std::vector<net_info> & {
     std::unordered_map<std::string, std::pair<u64, u64>> tmp_nets{};
-    if (fread.is_open()) fread.close();
+    if (net_file.is_open()) net_file.close();
 
-    fread.open(global::g_path / "proc/net/dev", std::ios_base::in);
+    net_file.open(global::g_path / "proc/net/dev", std::ios_base::in);
 
     std::string str{};
     int skip = 0;
-    while (fread.good()) {
-        std::getline(fread, str);
+    while (net_file.good()) {
+        std::getline(net_file, str);
         if (skip < 2) {
             ++skip;
             continue;
@@ -46,7 +46,7 @@ auto get_net_info() -> std::vector<net_info> & {
 
     tmp_nets.swap(old_nets);
 
-    fread.close();
+    net_file.close();
 
     return nets;
 }

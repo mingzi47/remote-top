@@ -17,6 +17,7 @@ project(rtop LANGUAGES CXX )
 include_directories(${PROJECT_SOURCE_DIR}/monitor/include)
 include_directories(${PROJECT_SOURCE_DIR}/server/include)
 include_directories(${PROJECT_SOURCE_DIR}/server/protos)
+include_directories(${PROJECT_SOURCE_DIR}/log)
 
 add_subdirectory(monitor)
 

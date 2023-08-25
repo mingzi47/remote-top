@@ -9,6 +9,7 @@
 #include <grpcpp/security/server_credentials.h>
 #include <monitor.h>
 #include <shared_mutex>
+#include <minilog.h>
 
 namespace server {
 

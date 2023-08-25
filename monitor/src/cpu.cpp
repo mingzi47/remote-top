@@ -4,16 +4,14 @@ namespace cpu {
 
 using namespace std::string_literals;
 
-std::ifstream cread{};
+std::ifstream cpu_file{};
 
-std::array time_name{
-    "totals"s, "idles"s, "user"s,    "nice"s,        "system"s, "idle"s,
-    "iowait"s, "irq"s,   "softirq"s, "stealstolen"s, "guest"s,
-};
+// "totals"s, "idles"s, "user"s,    "nice"s,        "system"s, "idle"s,
+// "iowait"s, "irq"s,   "softirq"s, "stealstolen"s, "guest"s,
 
 std::array<u64, 11> cur_times{};
 
-std::vector<u64> old_totals{}, old_idles{};
+std::vector<u64> old_idles{};
 
 cpu_info cpu{};
 
@@ -22,13 +20,16 @@ auto get_cpu_info() -> cpu_info & {
 
     if (cpu.cpu_name == "") {
         // 获得 cpu 名字，核心数，Hz
-        if (cread.is_open()) cread.close();
-        cread.open(global::g_path / "proc/cpuinfo", std::ios_base::in);
-        if (not cread.good()) { throw std::exception(); }
+        if (cpu_file.is_open()) cpu_file.close();
+        cpu_file.open(global::g_path / "proc/cpuinfo", std::ios_base::in);
+        if (not cpu_file.good()) {
+          minilog::error("failed open proc/cpuinfo");
+          exit(1);
+        }
         std::string str{};
         bool flag0{true}, flag1{true};
-        while (cread.good()) {
-            std::getline(cread, str);
+        while (cpu_file.good()) {
+            std::getline(cpu_file, str);
             if (str.starts_with("model name") and flag0) {
                 cpu.cpu_name = str.substr(str.find(":") + 1);
                 flag0 = false;
@@ -44,15 +45,15 @@ auto get_cpu_info() -> cpu_info & {
         cpu.cpu_s.resize(cpu.core_num + 1, 0);
     }
 
-    if (cread.is_open()) cread.close();
-    cread.open(global::g_path / "proc/stat");
+    if (cpu_file.is_open()) cpu_file.close();
+    cpu_file.open(global::g_path / "proc/stat");
 
-    if (not cread.good()) { throw std::exception(); }
+    if (not cpu_file.good()) { throw std::exception(); }
 
     // 计算 cpu 使用率
     std::string str{};
-    for (int i = 0; i <= cpu.core_num and cread.good(); ++i) {
-        std::getline(cread, str);
+    for (int i = 0; i <= cpu.core_num and cpu_file.good(); ++i) {
+        std::getline(cpu_file, str);
         if (not str.starts_with("cpu")) break;
         str.erase(0, str.find_first_of(" "));
         str.erase(0, str.find_first_not_of(" "));

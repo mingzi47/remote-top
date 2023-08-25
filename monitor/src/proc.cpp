@@ -3,7 +3,7 @@
 namespace proc {
 namespace fs = std::filesystem;
 
-std::ifstream fread{}, uread{};
+std::ifstream proc_file{}, usr_file{};
 
 std::vector<proc_info> procs{};
 
@@ -11,18 +11,18 @@ std::unordered_map<u64, u64> old_proc_time{}, old_cpu_time{};
 
 auto get_user_name(u64 uid) -> std::string {
     std::string tmp_usr_name{}, line_str{};
-    uread.open(global::g_path / "etc/passwd", std::ios_base::in);
-    while (uread.good()) {
-        std::getline(uread, line_str);
+    usr_file.open(global::g_path / "etc/passwd", std::ios_base::in);
+    while (usr_file.good()) {
+        std::getline(usr_file, line_str);
         if (line_str.find(":") == std::string::npos) { continue; }
         tmp_usr_name = line_str.substr(0, line_str.find(":"));
         line_str.erase(0, line_str.find(":x") + 3);
         if (uid == stoull(line_str)) {
-            uread.close();
+            usr_file.close();
             return tmp_usr_name;
         }
     }
-    uread.close();
+    usr_file.close();
     return "none";
 }
 
@@ -36,15 +36,15 @@ auto get_proc_info(u64 core_num) -> std::vector<proc_info> && {
         if (file.status().type() != fs::file_type::directory) continue;
         std::string filename = file.path().filename().c_str();
         if (not std::isdigit(filename[0])) continue;
-        if (fread.is_open()) fread.close();
+        if (proc_file.is_open()) proc_file.close();
 
-        fread.open(
+        proc_file.open(
             global::g_path / "proc" / filename / "status", std::ios_base::in);
 
         proc_info new_proc{};
 
-        while (fread.good()) {
-            std::getline(fread, str);
+        while (proc_file.good()) {
+            std::getline(proc_file, str);
             if (str.starts_with("Uid")) {
                 str.erase(0, str.find(':') + 1);
                 auto uid = std::stoull(str);
@@ -55,17 +55,17 @@ auto get_proc_info(u64 core_num) -> std::vector<proc_info> && {
             }
         }
 
-        fread.close();
+        proc_file.close();
 
-        fread.open(
+        proc_file.open(
             global::g_path / "proc" / filename / "stat", std::ios_base::in);
 
         // pid 1 cmd 2 state 3 ppid 4 thread 20
         // utime 14 stime 15 cutime 16 cstime 17
 
         u64 cpu_t = 0;
-        while (fread.good()) {
-            std::getline(fread, str);
+        while (proc_file.good()) {
+            std::getline(proc_file, str);
             std::istringstream ist(str);
             for (int index = 1; index <= 20; ++index) {
                 switch (index) {
@@ -115,13 +115,13 @@ auto get_proc_info(u64 core_num) -> std::vector<proc_info> && {
             }
         }
 
-        fread.close();
+        proc_file.close();
 
-        fread.open(global::g_path / "proc" / "stat", std::ios_base::in);
+        proc_file.open(global::g_path / "proc" / "stat", std::ios_base::in);
 
         u64 cur_cpu_time{0};
-        while (fread.good()) {
-            std::getline(fread, str);
+        while (proc_file.good()) {
+            std::getline(proc_file, str);
             if (str.starts_with("cpu")) {
                 str.erase(0, str.find(' '));
                 std::istringstream ist(str);
@@ -131,7 +131,7 @@ auto get_proc_info(u64 core_num) -> std::vector<proc_info> && {
             }
         }
 
-        fread.close();
+        proc_file.close();
 
         auto calc_proc_time = cpu_t - old_proc_time[new_proc.proc_pid];
         auto calc_cpu_time = cur_cpu_time - old_cpu_time[new_proc.proc_pid];
