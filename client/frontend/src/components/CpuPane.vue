@@ -19,6 +19,8 @@
 
 <script>
 import { ref, computed, inject, onUnmounted } from "vue";
+import { GetCpu } from "../../wailsjs/go/main/Collect";
+
 
 export default {
   setup() {
@@ -45,21 +47,28 @@ export default {
       return "#FF0000";
     };
 
-    const cpuInfo = inject("MonitorInfo");
+    const tabTitle = inject("Monitor_tabTitle")
     const cpuTimer = setInterval(() => {
-      main_data.value = cpuInfo.value.Cpu.MainData.toFixed(1);
-      const tmp = cpuInfo.value.Cpu.CoreData;
-      cpu_name.value = cpuInfo.value.Cpu.Name;
-      core_data.value.name = tmp.Name;
-      core_data.value.data = tmp.map((value) => {
-        return {
-          value: value.Value,
-          itemStyle: {
-            color: setColor(value.Value),
-          },
-        };
-      });
-    }, 2000);
+      GetCpu(tabTitle.value, 50051).then((result) => {
+        console.log("get cpu sucess !\n", result)
+        main_data.value = result.MainData.toFixed(1);
+
+        const tmp = result.CoreData;
+        cpu_name.value = result.Name;
+        core_data.value.name = tmp.Name;
+        core_data.value.data = tmp.map((value) => {
+          return {
+            value: value.Value,
+            itemStyle: {
+              color: setColor(value.Value),
+            },
+          };
+        });
+      }).catch((error) => {
+        console.log("get cpu sucess !\n", result)
+        alert(error)
+      })
+    }, 1500);
 
     const main_option = computed(() => {
       return {
@@ -153,6 +162,7 @@ export default {
       core_option,
       core_data,
       cpu_name,
+      tabTitle,
     };
   },
 };

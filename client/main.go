@@ -13,8 +13,7 @@ var assets embed.FS
 
 func main() {
 	// Create an instance of the app structure
-	app := NewApp()
-	client := Collect{}
+	collect := NewCollect()
 
 	// Create application with options
 	err := wails.Run(&options.App{
@@ -25,10 +24,9 @@ func main() {
 			Assets: assets,
 		},
 		BackgroundColour: &options.RGBA{R: 255, G: 255, B: 255, A: 1},
-		OnStartup:        app.startup,
+		OnStartup:        collect.startup,
 		Bind: []interface{}{
-			app,
-			&client,
+      collect,
 		},
 	})
 

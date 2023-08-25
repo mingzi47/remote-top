@@ -1,187 +1,14 @@
 package main
 
 import (
-	"changeme/pb"
+	"rtop/pb"
 	"context"
 	"fmt"
 	"io"
-	"log"
+  "errors"
 
 	"google.golang.org/grpc"
 )
-
-// App struct
-type App struct {
-	ctx context.Context
-}
-
-// NewApp creates a new App application struct
-func NewApp() *App {
-	return &App{}
-}
-
-// startup is called when the app starts. The context is saved
-// so we can call the runtime methods
-func (a *App) startup(ctx context.Context) {
-	a.ctx = ctx
-}
-
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
-}
-
-type Collect struct {
-  conn  *grpc.ClientConn
-  client pb.MonitorClient
-}
-
-func (collect *Collect)Close() {
-  collect.Close()
-}
-
-func (collect Collect)NewCollect(ip string, port int32) (Collect, error) {
-  conn, err := grpc.Dial(fmt.Sprintf("%s:%d", ip, port), grpc.WithInsecure())
-  if err != nil {
-    log.Fatal(err.Error());
-    return Collect{}, err
-  }
-
-  // defer conn.Close()
-
-  client := pb.NewMonitorClient(conn);
-
-  if err != nil {
-    log.Fatal(err.Error());
-    return Collect{}, err
-  }
-
-  return Collect{
-    conn : conn,
-    client : client,
-  }, nil
-}
-
-func getCpu(client *pb.MonitorClient) (Cpu, error) {
-
-  res, err := (*client).GetCpu(context.Background(), &pb.Request{})
-  if err != nil {
-    return Cpu{}, err
-  }
-  var kvArray []KVarr
-  for i, val := range res.CpuS[1:] {
-    name := fmt.Sprintf("cpu%d", i)
-    kvArray = append(kvArray, KVarr{Name: name, Value: float64(val)})
-  }
-  return Cpu{
-    Name : res.Name,
-    MainData : float64(res.CpuS[0]),
-    CpuHz : float64(res.CpuHz),
-    CoreData : kvArray,
-  }, nil
-}
-
-func (collect Collect)Collect(ip string, port int32) (MonitorInfo, error) {
-  conn, err := grpc.Dial(fmt.Sprintf("%s:%d", ip, port), grpc.WithInsecure())
-  if err != nil {
-    return MonitorInfo{}, err;
-  }
-
-  client := pb.NewMonitorClient(conn);
-	defer conn.Close()
-
-  if err != nil {
-    log.Fatal(err.Error());
-    return MonitorInfo{}, err
-  }
-  cpu, err:= getCpu(&client);
-  if err != nil {
-    return MonitorInfo{}, err
-  }
-  mem, err:= getMem(&client);
-  if err != nil {
-    return MonitorInfo{}, err
-  }
-  nets, err:= getNets(&client);
-  if err != nil {
-    return MonitorInfo{}, err
-  }
-  procs, err:= getProcs(&client);
-  if err != nil {
-    return MonitorInfo{}, err
-  }
-  return MonitorInfo{
-    Cpu: cpu,
-    Mem: mem,
-    Nets: nets,
-    Procs: procs,
-  }, nil
-}
-
-func getMem(client *pb.MonitorClient) (Mem, error) {
-  res, err := (*client).GetMem(context.Background(), &pb.Request{})
-  if err != nil {
-    return Mem{}, err
-  }
-  return Mem{
-    MemTotal : res.Total,
-    MemFree  : res.Free,
-    SwapTotal : res.SwapTotal,
-    SwapFree : res.SwapFree,
-  }, nil
-}
-
-func getNets(client *pb.MonitorClient) ([]Net, error) {
-  rep, err := (*client).GetNets(context.Background(), &pb.Request{})
-  if err != nil {
-    return nil, err
-  }
-  var res []Net
-  for {
-    data, err := rep.Recv();
-    if err != nil && err == io.EOF {
-      break;
-    }
-    if err != nil {
-      return nil, err
-    }
-    res = append(res, Net{
-      Name: data.Name,
-      UploadS : data.UploadS,
-      DownloadS : data.DownloadS,
-      Upload : data.Upload,
-      Download : data.Download,
-    });
-  }
-  return res, nil
-}
-
-func getProcs(client *pb.MonitorClient) ([]Proc, error) {
-  rep, err := (*client).GetProcs(context.Background(), &pb.Request{})
-  if err != nil {
-    return nil, err
-  }
-  var res []Proc
-  for {
-    data, err := rep.Recv();
-    if err != nil && err == io.EOF {
-      break;
-    }
-    if err != nil {
-      return nil, err
-    }
-    res = append(res, Proc{
-      Name: data.Name,
-      Usr : data.Usr,
-      State : data.State,
-      Pid : data.Pid,
-      Mem : data.Mem,
-      Cpu : float64(data.CpuS),
-      Thread : data.ThreadNum,
-    });
-  }
-  return res, nil
-}
 
 type Cpu struct {
   Name  string
@@ -213,7 +40,7 @@ type Net struct {
 
 type Proc struct {
   Name string
-  Usr string
+  User string
   State string
   Pid int64
   Mem int64
@@ -226,4 +53,168 @@ type MonitorInfo struct {
   Mem Mem
   Nets []Net
   Procs []Proc
+}
+
+type Collect struct {
+  conn map[string]*grpc.ClientConn
+  client map[string]pb.MonitorClient
+  ctx context.Context
+  conn_num int
+}
+
+func NewCollect() *Collect {
+  return &Collect{}
+}
+
+func (collect *Collect) startup(ctx context.Context) {
+  collect.ctx = ctx 
+  collect.conn_num = 10
+  collect.client = make(map[string]pb.MonitorClient)
+  collect.conn = make(map[string]*grpc.ClientConn)
+}
+
+func (collect *Collect) Delete(ip string, port int32) {
+  address := fmt.Sprintf("%s:%d", ip, port)
+  collect.conn[address].Close()
+  delete(collect.conn, address);
+  delete(collect.client, address);
+}
+
+func (collect *Collect) Close() {
+  for c := range collect.conn {
+    collect.conn[c].Close()
+    delete(collect.conn, c);
+    delete(collect.client, c);
+  }
+}
+
+func (collect *Collect) shutdown() {
+  collect.Close();
+}
+
+func (collect *Collect) CreateConn(ip string, port int32) (*pb.MonitorClient, error) {
+  if len(collect.client) >= collect.conn_num {
+    return nil, errors.New("No free Connect")
+  }
+  address := fmt.Sprintf("%s:%d", ip, port);
+  temp, exist := collect.client[address];
+  if exist {
+    return &temp, nil;
+  }
+  conn, err := grpc.Dial(address, grpc.WithInsecure())
+
+  if err != nil {
+    return nil, err;
+  }
+
+  collect.conn[address] = conn
+  collect.client[address] = pb.NewMonitorClient(conn);
+  return nil, nil
+}
+
+
+func (collect *Collect)GetCpu(ip string, port int32) (*Cpu, error) {
+
+  address := fmt.Sprintf("%s:%d", ip, port)
+  client, ok := collect.client[address];
+  if !ok {
+    return nil, errors.New("not found");
+  }
+  res, err := client.GetCpu(context.Background(), &pb.Request{})
+  if err != nil {
+    return nil, err
+  }
+
+  var kvArray []KVarr
+  for i, val := range res.CpuS[1:] {
+    name := fmt.Sprintf("cpu%d", i)
+    kvArray = append(kvArray, KVarr{Name: name, Value: float64(val)})
+  }
+  return &Cpu{
+    Name : res.Name,
+    MainData : float64(res.CpuS[0]),
+    CpuHz : float64(res.CpuHz),
+    CoreData : kvArray,
+  }, nil
+}
+
+
+func (collect *Collect) GetMem(ip string, port int32) (*Mem, error) {
+  address := fmt.Sprintf("%s:%d", ip, port)
+  client, ok := collect.client[address];
+  if !ok {
+    return nil, errors.New("not found");
+  }
+  res, err := client.GetMem(context.Background(), &pb.Request{})
+  if err != nil {
+    return nil, err
+  }
+  return &Mem{
+    MemTotal : res.Total,
+    MemFree  : res.Free,
+    SwapTotal : res.SwapTotal,
+    SwapFree : res.SwapFree,
+  }, nil
+}
+
+func (collect *Collect)GetNets(ip string, port int32) ([]Net, error) {
+  address := fmt.Sprintf("%s:%d", ip, port)
+  client, ok := collect.client[address];
+  if !ok {
+    return nil, errors.New("not found");
+  }
+  rep, err := client.GetNets(context.Background(), &pb.Request{})
+  if err != nil {
+    return nil, err
+  }
+  var res []Net
+  for {
+    data, err := rep.Recv();
+    if err != nil && err == io.EOF {
+      break;
+    }
+    if err != nil {
+      return nil, err
+    }
+    res = append(res, Net{
+      Name: data.Name,
+      UploadS : data.UploadS,
+      DownloadS : data.DownloadS,
+      Upload : data.Upload,
+      Download : data.Download,
+    });
+  }
+  return res, nil
+}
+
+func (collect *Collect)GetProcs(ip string, port int32) ([]Proc, error) {
+  address := fmt.Sprintf("%s:%d", ip, port)
+  client, ok := collect.client[address];
+  if !ok {
+    return nil, errors.New("not found");
+  }
+  rep, err := client.GetProcs(context.Background(), &pb.Request{})
+  if err != nil {
+    return nil, err
+  }
+  var res []Proc
+  for {
+    data, err := rep.Recv();
+    if err != nil && err == io.EOF {
+      break;
+    }
+    if err != nil {
+      return nil, err
+    }
+    res = append(res, Proc{
+      Name: data.Name,
+      User : data.Usr,
+      State : data.State,
+      Pid : data.Pid,
+      Mem : data.Mem,
+      Cpu : float64(data.CpuS),
+      Thread : data.ThreadNum,
+    });
+  }
+  return res, nil
 }

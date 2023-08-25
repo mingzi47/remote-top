@@ -44,6 +44,7 @@
 
 <script>
 import { inject, ref, onUnmounted } from "vue";
+import { GetNets } from "../../wailsjs/go/main/Collect";
 
 export default {
   name: "NetPane",
@@ -103,10 +104,13 @@ export default {
       return row.Upload.toFixed(1) + val[i];
     };
 
-    const MonitorInfo = inject("MonitorInfo");
-
+    const tabTitle = inject("Monitor_tabTitle")
     const netTimer = setInterval(() => {
-      tableData.value = MonitorInfo.value.Nets;
+      GetNets(tabTitle.value, 50051).then((result) => {
+        tableData.value = result;
+      }).catch((error) => {
+        console.log(error)
+      })
     }, 2000);
 
     onUnmounted(() => {
@@ -118,6 +122,7 @@ export default {
       fU,
       fDs,
       fD,
+      tabTitle,
     };
   },
 };

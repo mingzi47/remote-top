@@ -6,10 +6,26 @@ export function Close() {
   return window['go']['main']['Collect']['Close']();
 }
 
-export function Collect(arg1, arg2) {
-  return window['go']['main']['Collect']['Collect'](arg1, arg2);
+export function CreateConn(arg1, arg2) {
+  return window['go']['main']['Collect']['CreateConn'](arg1, arg2);
 }
 
-export function NewCollect(arg1, arg2) {
-  return window['go']['main']['Collect']['NewCollect'](arg1, arg2);
+export function Delete(arg1, arg2) {
+  return window['go']['main']['Collect']['Delete'](arg1, arg2);
+}
+
+export function GetCpu(arg1, arg2) {
+  return window['go']['main']['Collect']['GetCpu'](arg1, arg2);
+}
+
+export function GetMem(arg1, arg2) {
+  return window['go']['main']['Collect']['GetMem'](arg1, arg2);
+}
+
+export function GetNets(arg1, arg2) {
+  return window['go']['main']['Collect']['GetNets'](arg1, arg2);
+}
+
+export function GetProcs(arg1, arg2) {
+  return window['go']['main']['Collect']['GetProcs'](arg1, arg2);
 }

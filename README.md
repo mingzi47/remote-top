@@ -8,10 +8,11 @@ Remote Linux Monitoring with [gRPC](https://grpc.io/docs/languages/cpp/quickstar
 
  
 
-## Features
+## Todo
 
 - [x] Connectiong to Remote Linux.
-- [ ] Client connecting to multiple remote Linux instances.
+- [x] Client connecting to multiple remote Linux instances.
+- [ ] async log
 - [ ] Establishing a Secure Connection.
 
 ## Trying

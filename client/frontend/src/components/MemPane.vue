@@ -37,6 +37,7 @@
 
 <script>
 import { inject, ref, onUnmounted } from "vue";
+import { GetMem } from "../../wailsjs/go/main/Collect";
 
 export default {
   name: "ProcPane",
@@ -55,25 +56,29 @@ export default {
       if (i >= 3) i = 2;
       return mem.toFixed(1) + val[i];
     };
-    const MonitorInfo = inject("MonitorInfo");
     const memTotal = ref("null");
     const memFree = ref("null");
     const swapTotal = ref("null");
     const swapFree = ref("null");
 
+    const tabTitle = inject("Monitor_tabTitle")
     const memTimer = setInterval(() => {
-      memTotal.value = disPlay(MonitorInfo.value.Mem.MemTotal);
-      memFree.value = disPlay(MonitorInfo.value.Mem.MemFree);
-      swapTotal.value = disPlay(MonitorInfo.value.Mem.SwapTotal);
-      swapFree.value = disPlay(MonitorInfo.value.Mem.SwapFree);
-      console.log(
-        "debug mem : ",
-        memTotal.value,
-        memFree.value,
-        swapTotal.value,
-        swapFree.value
-      );
-    }, 2000);
+      GetMem(tabTitle.value, 50051).then((result) => {
+        memTotal.value = disPlay(result.MemTotal);
+        memFree.value = disPlay(result.MemFree);
+        swapTotal.value = disPlay(result.SwapTotal);
+        swapFree.value = disPlay(result.SwapFree);
+        console.log(
+          "debug mem : ",
+          memTotal.value,
+          memFree.value,
+          swapTotal.value,
+          swapFree.value
+        );
+      }).catch((error) => {
+        alert(error)
+      })
+    }, 1500);
 
     onUnmounted(() => {
       clearInterval(memTimer);
@@ -84,6 +89,7 @@ export default {
       memFree,
       swapTotal,
       swapFree,
+      tabTitle,
     };
   },
 };

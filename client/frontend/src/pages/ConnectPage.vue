@@ -1,10 +1,10 @@
 <script>
-import { ref, inject } from "vue";
-import MonitorPane from "./MonitorPane.vue";
-import { Collect } from "../../wailsjs/go/main/Collect";
+import { ref, inject, provide } from "vue";
+import MonitorPage from "./MonitorPage.vue";
+import { CreateConn } from "../../wailsjs/go/main/Collect";
 
 export default {
-  name: "ConnectPane",
+  name: "ConnectPage",
   setup() {
     const ip_text = ref(" ");
 
@@ -12,12 +12,12 @@ export default {
     const editableTabsValue = inject("Main_editableTabsValue");
     function onConnect() {
       console.log("ip : " + ip_text.value);
-      Collect(ip_text.value.trim(), 50051)
+      CreateConn(ip_text.value.trim(), 50051)
         .then((result) => {
           editableTabs.value.forEach((tab) => {
             if (tab.name == editableTabsValue.value) {
-              tab.title = ip_text;
-              tab.content = MonitorPane;
+              tab.title = ip_text.value.trim();
+              tab.content = MonitorPage;
             }
           });
         })
@@ -28,7 +28,7 @@ export default {
     return {
       ip_text,
       onConnect,
-      MonitorPane,
+      MonitorPage,
     };
   },
 };

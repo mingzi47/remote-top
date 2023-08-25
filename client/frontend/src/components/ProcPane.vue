@@ -24,6 +24,7 @@
 
 <script>
 import { inject, ref, onUnmounted } from "vue";
+import { GetProcs } from "../../wailsjs/go/main/Collect";
 
 export default {
   name: "ProcPane",
@@ -45,10 +46,14 @@ export default {
       if (i >= 3) i = 2;
       return row.Mem.toFixed(1) + val[i];
     };
-    const MonitorInfo = inject("MonitorInfo");
 
+    const tabTitle = inject("Monitor_tabTitle")
     const procTimer = setInterval(() => {
-      tableData.value = MonitorInfo.value.Procs;
+      GetProcs(tabTitle.value, 50051).then((result) => {
+        tableData.value = result;
+      }).catch((error) => {
+        console.log(error);
+      })
     }, 2000);
 
     onUnmounted(() => {
@@ -59,6 +64,7 @@ export default {
       tableData,
       fCpu,
       fMem,
+      tabTitle,
     };
   },
 };
