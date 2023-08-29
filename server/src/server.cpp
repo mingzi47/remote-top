@@ -102,7 +102,7 @@ auto MonitorImpl::GetProcs(
     return grpc::Status::OK;
 }
 auto Server::Run() -> void {
-    std::string server_address = "0.0.0.0:50051";
+    std::string server_address = std::format("0.0.0.0:{}", global::g_port);
 
     MonitorImpl service;
 
@@ -113,7 +113,7 @@ auto Server::Run() -> void {
     builder.RegisterService(&service);
     std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
 
-    std::cout << "Server listening on " << server_address << "\n";
+    minilog::info("Server listening {} ... \n", server_address);
     server->Wait();
 }
 } // namespace server

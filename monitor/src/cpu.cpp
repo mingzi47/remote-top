@@ -4,6 +4,7 @@ namespace cpu {
 
 using namespace std::string_literals;
 
+// proc/cpuinfo, proc/stat
 std::ifstream cpu_file{};
 
 // "totals"s, "idles"s, "user"s,    "nice"s,        "system"s, "idle"s,
