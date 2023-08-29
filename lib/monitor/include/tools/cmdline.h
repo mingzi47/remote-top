@@ -40,9 +40,11 @@ concept Opt = std::is_same_v<T, option>;
 
 template <Opt... Opts> void parse(int argc, char **argv, Opts &&...opts) {
   for (int i = 1; i < argc; ++i) {
-    int size = 0;
-    int arr[] = {(++size, details::parse_opt(i, argc, argv, opts))...};
-    if (std::accumulate(arr, arr + size, 0) == 0) {
+    int res = 0;
+    // int arr[] = {(++size, details::parse_opt(i, argc, argv, opts))...};
+    ((res += details::parse_opt(i, argc, argv, opts)), ...);
+    // if (std::accumulate(arr, arr + size, 0) == 0) {
+    if (res == 0) {
       std::cerr << std::format("invalid option : {}\n", argv[i]);
       exit(-1);
     }

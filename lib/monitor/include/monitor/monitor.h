@@ -1,7 +1,7 @@
-#include <cpu.h>
-#include <mem.h>
-#include <net.h>
-#include <proc.h>
+#include <monitor/cpu.h>
+#include <monitor/mem.h>
+#include <monitor/net.h>
+#include <monitor/proc.h>
 
 namespace monitor {
 

@@ -2,9 +2,8 @@
 #include <iostream>
 #include <server.h>
 #include <thread>
-#include <global.h>
-#include <unistd.h>
-#include <cmdline.h>
+#include <monitor/global.h>
+#include <tools/cmdline.h>
 
 using namespace std::chrono_literals;
 

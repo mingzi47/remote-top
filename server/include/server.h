@@ -7,9 +7,9 @@
 #include <grpcpp/support/status.h>
 #include <grpcpp/server_builder.h>
 #include <grpcpp/security/server_credentials.h>
-#include <monitor.h>
+#include <monitor/monitor.h>
 #include <shared_mutex>
-#include <minilog.h>
+#include <tools/minilog.h>
 
 namespace server {
 

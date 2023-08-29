@@ -1,6 +1,3 @@
-include_directories(${PROJECT_SOURCE_DIR}/server/include)
-include_directories(${PROJECT_SOURCE_DIR}/server/protos)
-
 # 查找本地Protobuf模块的库信息，实际上CMake就是在找Protobuf-config.cmake文件
 set(protobuf_MODULE_COMPATIBLE TRUE)
 find_package(Protobuf CONFIG REQUIRED)
@@ -34,16 +31,20 @@ target_link_libraries(rg_grpc_proto
   ${_GRPC_GRPCPP}
   ${_PROTOBUF_LIBPROTOBUF})
 
+target_include_directories(rg_grpc_proto PUBLIC protos)
+
 # 生成二进制文件并链接库
 file(GLOB server_src ${PROJECT_SOURCE_DIR}/server/*.cpp 
 ${PROJECT_SOURCE_DIR}/server/src/*.cpp)
 
 
-add_executable(server ${server_src})
-target_link_libraries(server
+add_executable(remote-top-server ${server_src})
+target_link_libraries(remote-top-server
   rg_grpc_proto
   monitor
   ${_REFLECTION}
   ${_GRPC_GRPCPP}
   ${_PROTOBUF_LIBPROTOBUF}
 )
+
+target_include_directories(remote-top-server PUBLIC include)

@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <cctype>
-#include <cpu.h>
+#include <monitor/cpu.h>
 #include <filesystem>
 #include <fstream>
 #include <pwd.h>
@@ -9,7 +9,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <global.h>
+#include <monitor/global.h>
 
 /*
   files

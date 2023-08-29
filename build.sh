@@ -7,7 +7,7 @@ function build_server() {
 }
 
 function run_server() {
-  build_server && ./build/server/server
+  build_server && ./bin/remote-top-server
 }
 
 function build_client() {
