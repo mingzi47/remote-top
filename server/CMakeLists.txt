@@ -1,4 +1,3 @@
-# 查找本地Protobuf模块的库信息，实际上CMake就是在找Protobuf-config.cmake文件
 set(protobuf_MODULE_COMPATIBLE TRUE)
 find_package(Protobuf CONFIG REQUIRED)
 message(STATUS "Using protobuf ${Protobuf_VERSION}")
@@ -11,7 +10,6 @@ else()
   set(_PROTOBUF_PROTOC $<TARGET_FILE:protobuf::protoc>)
 endif()
 
-# 查找本地gRPC模块的库信息
 find_package(gRPC CONFIG REQUIRED)
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 
@@ -24,7 +22,6 @@ endif()
 
 file(GLOB proto_srcs_hdrs ./protos/*.cc)
 
-# 生成proto 文件并链接库
 add_library(rg_grpc_proto ${proto_srcs_hdrs})
 target_link_libraries(rg_grpc_proto
   ${_REFLECTION}
@@ -33,7 +30,6 @@ target_link_libraries(rg_grpc_proto
 
 target_include_directories(rg_grpc_proto PUBLIC protos)
 
-# 生成二进制文件并链接库
 file(GLOB server_src ${PROJECT_SOURCE_DIR}/server/*.cpp 
 ${PROJECT_SOURCE_DIR}/server/src/*.cpp)
 

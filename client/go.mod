@@ -1,4 +1,4 @@
-module rtop
+module remote-top-client
 
 go 1.18
 

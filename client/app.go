@@ -1,7 +1,7 @@
 package main
 
 import (
-	"rtop/pb"
+	"remote-top-client/pb"
 	"context"
 	"fmt"
 	"io"
