@@ -19,30 +19,32 @@ cpu_info cpu{};
 auto get_cpu_info() -> cpu_info & {
     cpu.clear();
 
-    if (cpu.cpu_name == "") {
-        // 获得 cpu 名字，核心数，Hz
-        if (cpu_file.is_open()) cpu_file.close();
-        cpu_file.open(global::g_path / "proc/cpuinfo", std::ios_base::in);
-        if (not cpu_file.good()) {
-            minilog::error("failed open proc/cpuinfo");
-            exit(1);
+    // 获得 cpu 名字，核心数，Hz
+    if (cpu_file.is_open()) cpu_file.close();
+
+    cpu_file.open(global::g_path / "proc/cpuinfo", std::ios_base::in);
+
+    if (not cpu_file.good()) {
+        minilog::error("failed open proc/cpuinfo");
+        exit(1);
+    }
+
+    std::string str{};
+    bool flag0{true}, flag1{true};
+    while (cpu_file.good()) {
+        std::getline(cpu_file, str);
+        if (str.starts_with("model name") and flag0) {
+            cpu.cpu_name = str.substr(str.find(":") + 1);
+            flag0 = false;
+        } else if (str.starts_with("cpu MHz") and flag1) {
+            cpu.cpu_hz = std::stold(str.substr(str.find(":") + 1)) / 1024;
+            flag1 = false;
+        } else if (str.starts_with("processor")) {
+            ++cpu.core_num;
         }
-        std::string str{};
-        bool flag0{true}, flag1{true};
-        while (cpu_file.good()) {
-            std::getline(cpu_file, str);
-            if (str.starts_with("model name") and flag0) {
-                cpu.cpu_name = str.substr(str.find(":") + 1);
-                flag0 = false;
-            } else if (str.starts_with("cpu MHz") and flag1) {
-                cpu.cpu_hz = std::stold(str.substr(str.find(":") + 1)) / 1024;
-                flag1 = false;
-            } else if (str.starts_with("processor")) {
-                ++cpu.core_num;
-            }
-        }
-        old_totals.resize(cpu.core_num + 1, 0);
-        old_idles.resize(cpu.core_num + 1, 0);
+    }
+
+    if (cpu.core_num != cpu.cpu_s.size()) {
         cpu.cpu_s.resize(cpu.core_num + 1, 0);
     }
 
@@ -52,9 +54,15 @@ auto get_cpu_info() -> cpu_info & {
     if (not cpu_file.good()) { throw std::exception(); }
 
     // 计算 cpu 使用率
-    std::string str{};
-    for (int i = 0; i <= cpu.core_num and cpu_file.good(); ++i) {
-        std::getline(cpu_file, str);
+    str = "";
+    if (cpu.cpu_s.size() != old_totals.size()) {
+        old_totals.clear();
+        old_idles.clear();
+        old_totals.resize(cpu.core_num, 0);
+        old_idles.resize(cpu.core_num, 0);
+    }
+    for (int i = 0; i <= cpu.core_num and std::getline(cpu_file, str).good();
+         ++i) {
         if (not str.starts_with("cpu")) break;
         str.erase(0, str.find_first_of(" "));
         str.erase(0, str.find_first_not_of(" "));
