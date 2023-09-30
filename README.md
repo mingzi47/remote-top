@@ -1,10 +1,3 @@
-## issue
-
-- module(monitor::cpu) :
-    - Old data is still used after the number of CPUs is changed
-
-- Exception
-
 # remote-top
 
 Remote Linux Monitoring with [gRPC](https://grpc.io/docs/languages/cpp/quickstart/) Implementation, Client built using [go-wails](https://github.com/wailsapp/wails)
